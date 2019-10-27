@@ -2,9 +2,9 @@
  ============================================================================
  Name        : rdparser.c
  Author      : @saafo
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
+ Version     : v0.1 Pre Alpha
+ Copyright   : Copyright (c) 2019 SaffordHuang All rights reserved.
+ Description : A Parser
  ============================================================================
  */
 
@@ -398,7 +398,45 @@ int parameter()
 
 int type()
 {
-	
+	if(tok == INT)
+	{
+		advance();
+		return 1;
+	}
+	else if(tok == STR)
+	{
+		advance();
+		return 1;
+	}
+	else if(tok == VOID)
+	{
+		advance();
+		return 1;
+	}
+	else
+	{
+		printf("Expected correct type.\n");
+		exit(-1);
+	}
+}
+
+// statement
+//     : type declarator_list ';'
+//     | '{' statement_list '}'
+//     | expr_statement
+//     | IF '(' expr ')' statement
+//     | IF '(' expr ')' statement ELSE statement
+//     | WHILE '(' expr ')' statement
+//     | RETURN ';'
+//     | RETURN expr ';'
+//     | PRINT ';
+//     | PRINT expr_list ';'
+//     | SCAN id_list ';'
+//     ;
+
+int statement()
+{
+	if(type())
 }
 
 //-----------------------------------------------
