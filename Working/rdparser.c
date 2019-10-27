@@ -40,7 +40,12 @@ void advance()
 //--------------------------
 // principles:
 //1. advance()写在函数内部，return 1时要注意需不需要advance()
-//2. 新的设计模式：取消函数参数，print只在函数开始匹配东西后输出，并exit(-1),若函数未匹配则return 0;
+//2. 回归旧的设计模式：恢复函数参数，print只在函数开始匹配东西后输出，并exit(-1),若函数未匹配则return 0;
+//--------------------------
+//记录一下：本来最开始采用参数控制是否要输出并退出，但后面以为这样很麻烦，
+//只需要匹配第一个模块是否能匹配就好了，但直到statement()的时候发现第一个参数
+//也不能确定是否就一定匹配该函数，所以新建了nonparameter分支保留了当时的痕迹
+//再次开始带参数的工作
 //--------------------------
 // return value:
 // 0:failed
@@ -57,16 +62,18 @@ void advance()
 //     ;
 // to clear left recursion:
 
-int program()
+int program(int t)
 {
-	if(external_declaration())
+	if(external_declaration(t))
 	{
-		while(external_declaration()){}//似乎存在潜在?隐患：ext_decl+ext_decl+type+decl时，yylex无法退回
+		while(external_declaration(0)){}//似乎存在潜在?隐患：ext_decl+ext_decl+type+decl时，yylex无法退回
 		return 1;//各list可能也有此隐患，记得处理
 	}
-	else
+	else if(t == 1)
+	{
 		printf("Expected correct external_declaration.\n");
-	// exit(-1);
+		exit(-1);
+	}
 	return 0;
 }
 
@@ -74,20 +81,23 @@ int program()
 //     : type declarator decl_or_stmt
 //     ;
 
-int external_declaration()
+int external_declaration(int t)
 {
-	if(type())
+	if(type(t))
 	{
 		// advance();
-		if(declarator())
+		if(declarator(t))
 		{
 			// advance();
-			if(decl_or_stmt())
+			if(decl_or_stmt(t))
 			{
 				// advance();
 				return 1;
 			}
 		}
+	}
+	if(t == 1)
+	{
 		printf("Expected correct external_declaration.\n");
 		exit(-1);
 	}
@@ -101,7 +111,7 @@ int external_declaration()
 //     | ';'
 //     ;
 
-int decl_or_stmt()
+int decl_or_stmt(int t)
 {
 	if(tok == '{')
 	{
@@ -111,7 +121,7 @@ int decl_or_stmt()
 			advance();
 			return 1;
 		}
-		else if(statement_list())
+		else if(statement_list(t))
 		{
 			// advance();
 			if(tok == '}')
@@ -119,16 +129,22 @@ int decl_or_stmt()
 				advance();
 				return 1;
 			}
-			else
-				printf("Expected a '}'.\n");exit(-1);
+			else if(t == 1)
+			{
+				printf("Expected a '}'.\n");
+				exit(-1);
+			}
 		}
-		else
-			printf("Expected a '}' or statement_list.\n");exit(-1);
+		else if(t == 1)
+		{
+			printf("Expected a '}' or statement_list.\n");
+			exit(-1);
+		}
 	}
 	else if(tok == ',')
 	{
 		advance();
-		if(declarator_list())
+		if(declarator_list(t))
 		{
 			// advance();
 			if(tok == ';')
@@ -136,12 +152,17 @@ int decl_or_stmt()
 				advance();
 				return 1;
 			}
-			else
-				printf("Expected a ';'.\n");exit(-1);
+			else if(t == 1)
+			{
+				printf("Expected a ';'.\n");
+				exit(-1);
+			}
 		}
-		else
-
-			printf("Expected correct declarator_list.\n");exit(-1);
+		else if(t == 1)
+		{
+			printf("Expected correct declarator_list.\n");
+			exit(-1);
+		}
 	}
 	else if(tok == ';')
 	{
@@ -156,21 +177,21 @@ int decl_or_stmt()
 //     | declarator_list ',' declarator
 //     ;
 
-int declarator_list()
+int declarator_list(int t)
 {
-	if(declarator())
+	if(declarator(t))
 	{
 		while (tok == ',')
 		{
 			advance();
-			if(!declarator())
+			if(!declarator(t) && t == 1)
 			{
-				printf("Expected an declarator.\n");exit(-1);
+				printf("Expected a declarator.\n");
+				exit(-1);
 			}
 		}
 		return 1;//没少advance
 	}
-
 	return 0;
 }
 
@@ -179,21 +200,21 @@ int declarator_list()
 //     | intstr_list ',' initializer
 //     ;
 
-int intstr_list()
+int intstr_list(int t)
 {
-	if(initializer())
+	if(initializer(t))
 	{
 		while (tok == ',')
 		{
 			advance();
-			if(!initializer())
+			if(!initializer(t) && t == 1)
 			{
-				printf("Expected an initializer.\n");exit(-1);
+				printf("Expected an initializer.\n");
+				exit(-1);
 			}
 		}
 		return 1;//没少advance
 	}
-
 	return 0;
 }
 
@@ -202,7 +223,7 @@ int intstr_list()
 //     | STRING
 //     ;
 
-int initializer()
+int initializer(int t)
 {
 	if(tok == NUMBER)
 	{
@@ -214,8 +235,11 @@ int initializer()
 		advance();
 		return 1;
 	}
-	else
-		printf("Expected a number or a string.\n");//exit(-1);???
+	else if(t == 1)
+	{
+		printf("Expected a number or a string.\n");
+		exit(-1);
+	}
 	return 0;
 }
 
@@ -230,7 +254,7 @@ int initializer()
 //     | ID '[' ']' '=' '{' intstr_list '}'
 //     ;
 
-int declarator()
+int declarator(int t)
 {
 	if(tok == ID)
 	{
@@ -238,9 +262,9 @@ int declarator()
 		if(tok == '=')
 		{
 			advance();
-			if(expr())
+			if(expr(t))
 				return 1;
-			else
+			else if (t == 1)
 			{
 				printf("Expected correct expr.\n");
 				exit(-1);
@@ -254,22 +278,22 @@ int declarator()
 				advance();
 				return 1;
 			}
-			else if(parameter_list())
+			else if(parameter_list(t))
 			{
 				if(tok == ')')
 				{
 					advance();
 					return 1;
 				}
-				else
+				else if(t == 1)
 				{
 					printf("Expected a ')'.\n");
 					exit(-1);
 				}
 			}
-			else
+			else if(t == 1)
 			{
-				printf("Expected a ')' or parameter_list");
+				printf("Expected a ')' or parameter_list.\n");
 				exit(-1);
 			}
 		}
@@ -285,29 +309,35 @@ int declarator()
 					if(tok == '{')
 					{
 						advance();
-						if(intstr_list())
+						if(intstr_list(t))
 						{
 							if(tok == '}')
 							{
 								advance();
 								return 1;
 							}
-							else
+							else if(t == 1)
+							{
 								printf("Expected a '}'.\n");
+								exit(-1);
+							}
+						}
+						else if(t == 1)
+						{
+							printf("Expected correct intstr_list.\n");
 							exit(-1);
 						}
-						else
-							printf("Expected correct intstr_list.\n");
+					}
+					else if(t == 1)
+					{
+						printf("Expected '{' intstr_list '}'.\n");
 						exit(-1);
 					}
-					else
-						printf("Expected '{' intstr_list '}'.\n");
-					exit(-1);
 				}
 				else
 					return 1;//没少advance
 			}
-			else if(expr())
+			else if(expr(t))
 			{
 				if(tok == ']')
 				{
@@ -317,14 +347,14 @@ int declarator()
 						if(tok == '{')
 						{
 							advance();
-							if(intstr_list())
+							if(intstr_list(t))
 							{
 								if(tok == '}')
 								{
 									advance();
 									return 1;
 								}
-								else
+								else if(t == 1)
 								{
 									printf("Expected a '}'.\n");
 									exit(-1);
@@ -341,10 +371,13 @@ int declarator()
 			// 		printf("Expected correct declarator expression.\n");
 		}
 		// else
-		printf("Expected correct declarator expression.\n");exit(-1);
+		// printf("Expected correct declarator expression.\n");exit(-1);
 	}
-	// else
-	// printf("Expected correct declarator expression.\n");
+	if(t == 1)
+	{
+		printf("Expected correct declarator expression.\n");
+		exit(-1);
+	}
 	return 0;
 }
 
@@ -353,14 +386,14 @@ int declarator()
 //         | parameter_list ',' parameter
 //         ;
 
-int parameter_list()
+int parameter_list(int t)
 {
-	if(parameter())
+	if(parameter(t))
 	{
 		while(tok == ',')
 		{
 			advance();
-			if(!parameter())
+			if(!parameter(t) && t == 1)
 			{
 				printf("Expected a parameter.\n");
 				exit(-1);
@@ -376,16 +409,20 @@ int parameter_list()
 //         : type ID
 //         ;
 
-int parameter()
+int parameter(int t)
 {
-	if(type())
+	if(type(t))
 	{
 		if(tok == ID)
 		{
 			advance();
 			return 1;
 		}
-		printf("Expected correct parameter expression.\n");exit(-1);
+		else if(t == 1)
+		{
+			printf("Expected correct parameter expression.\n");
+			exit(-1);
+		}
 	}
 	return 0;
 }
@@ -396,7 +433,7 @@ int parameter()
 //         | VOID
 //         ;
 
-int type()
+int type(int t)
 {
 	if(tok == INT)
 	{
@@ -413,11 +450,12 @@ int type()
 		advance();
 		return 1;
 	}
-	else
+	else if(t == 1)
 	{
 		printf("Expected correct type.\n");
 		exit(-1);
 	}
+	return 0;
 }
 
 // statement
@@ -434,9 +472,9 @@ int type()
 //     | SCAN id_list ';'
 //     ;
 
-int statement()
+int statement(int t)
 {
-	if(type())
+	if(type(t))
 }
 
 //-----------------------------------------------
