@@ -41,6 +41,7 @@ void advance()
 // principles:
 //1. advance()写在函数内部，return 1时要注意需不需要advance()
 //2. 回归旧的设计模式：恢复函数参数，print只在函数开始匹配东西后输出，并exit(-1),若函数未匹配则return 0;
+//3. 新发现：if(func())失败了不用printf和exit
 //--------------------------
 //记录一下：本来最开始采用参数控制是否要输出并退出，但后面以为这样很麻烦，
 //只需要匹配第一个模块是否能匹配就好了，但直到statement()的时候发现第一个参数
@@ -474,7 +475,136 @@ int type(int t)
 
 int statement(int t)
 {
-	if(type(t))
+	if(type(0))
+	{
+		if(declarator_list(t))
+		{
+			if(tok == ';')
+			{
+				advance();
+				return 1;
+			}
+			else if(t == 1)
+			{
+				printf("Expected a ';'.\n");
+				exit(-1);
+			}
+		}
+		// else if(t == 1)
+		// {
+		// 	printf("Expected correct declarator_list.\n");
+		// 	exit(-1);
+		// }
+	}
+	else if(tok == '{')
+	{
+		advance();
+		if(statement_list(t))
+		{
+			if(tok == '}')
+			{
+				advance();
+				return 1;
+			}
+			else if(t == 1)
+			{
+				printf("Expected a '}'.\n");
+				exit(-1);
+			}
+		}
+		// else
+	}
+	else if(expression_statement(0))
+		return 1;
+	else if(tok == IF)
+	{
+		advance();
+		if(tok == '(')
+		{
+			advance();
+			if(expr(t))
+			{
+				if(tok == ')')
+				{
+					advance();
+					if(statement(t))
+					{
+						if(tok == ELSE)
+						{
+							advance();
+							if(statement(t))
+								return 1;
+						}
+						else
+							return 1;
+					}
+				}
+				else if(t == 1)
+				{
+					printf("Expected a ')'.\n");
+					exit(-1);
+				}
+			}
+		}
+		else if(t == 1)
+		{
+			printf("Expected a '('.\n");
+			exit(-1);
+		}
+	}
+	else if(tok == WHILE)
+	{
+		advance();
+		if(tok == '(')
+		{
+			advance();
+			if(expr(t))
+			{
+				if(tok == ')')
+				{
+					advance();
+					if(statement(t))
+						return 1;
+				}
+				else if(t == 1)
+				{
+					printf("Expected a ')'.\n");
+					exit(-1);
+				}
+			}
+		}
+		else if(t == 1)
+		{
+			printf("Expected a '('.\n");
+			exit(-1);
+		}
+	}
+	else if(tok == RETURN)
+	{
+		advance();
+		if(tok == ';')
+		{
+			advance();
+			return 1;
+		}
+		else if(expr(t))
+		{
+			if(tok == ';')
+			{
+				advance();
+				return 1;
+			}
+			else if(t == 1)
+			{
+				printf("Expected a ';'.\n");
+				exit(-1);
+			}
+		}
+	}
+	else if(tok == PRINT)
+	{
+		//CONTINUE YOUR WORK HERE.
+	}
 }
 
 //-----------------------------------------------
