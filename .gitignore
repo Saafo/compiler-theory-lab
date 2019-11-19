@@ -55,3 +55,8 @@ dkms.conf
 *.png
 **/.vscode/*
 .DS_Store
+*.ppt
+*.pptx
+*.doc
+*.docx
+Chapter_2/

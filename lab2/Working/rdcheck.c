@@ -651,7 +651,7 @@ int statement(int t)
 	else if(tok == SCAN)
 	{
 		advance();
-		if(id_list())
+		if(id_list(t))
 		{
 			if(tok == ';')
 			{
