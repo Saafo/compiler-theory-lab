@@ -22,6 +22,7 @@ extern int yylex();
 extern int yylval;
 extern char* yypstr;//记得free!!!
 extern char* yytext;
+extern FILE* yyin;
 
 
 int factor();
@@ -185,10 +186,15 @@ int declarator_list(int t)
 		while (tok == ',')
 		{
 			advance();
-			if(!declarator(t) && t == 1)
+			if(!declarator(t))
 			{
-				printf("Expected a declarator.\n");
-				exit(-1);
+				if(t == 1)
+				{
+					printf("Expected a declarator.\n");
+					exit(-1);
+				}
+				else
+					return 0;
 			}
 		}
 		return 1;//没少advance
@@ -208,10 +214,15 @@ int intstr_list(int t)
 		while (tok == ',')
 		{
 			advance();
-			if(!initializer(t) && t == 1)
+			if(!initializer(t))
 			{
-				printf("Expected an initializer.\n");
-				exit(-1);
+				if(t == 1)
+				{
+					printf("Expected an initializer.\n");
+					exit(-1);
+				}
+				else
+					return 0;
 			}
 		}
 		return 1;//没少advance
@@ -371,10 +382,10 @@ int declarator(int t)
 			// 	if(t == 1)
 			// 		printf("Expected correct declarator expression.\n");
 		}
-		// else
-		// printf("Expected correct declarator expression.\n");exit(-1);
+		else
+			return 1;
 	}
-	if(t == 1)
+	else if(t == 1)
 	{
 		printf("Expected correct declarator expression.\n");
 		exit(-1);
@@ -394,10 +405,15 @@ int parameter_list(int t)
 		while(tok == ',')
 		{
 			advance();
-			if(!parameter(t) && t == 1)
+			if(!parameter(t))
 			{
-				printf("Expected a parameter.\n");
-				exit(-1);
+				if(t == 1)
+				{
+					printf("Expected a parameter.\n");
+					exit(-1);
+				}
+				else
+					return 0;
 			}
 		}
 		return 1;//没少advance
@@ -600,193 +616,464 @@ int statement(int t)
 				exit(-1);
 			}
 		}
+		else if(t == 1)
+		{
+			printf("Expected correct RETURN sentence.\n");
+		}
 	}
 	else if(tok == PRINT)
 	{
-		//CONTINUE YOUR WORK HERE.
+		advance();
+		if(tok == ';')
+		{
+			advance();
+			return 1;
+		}
+		else if(expr_list(t))
+		{
+			if(tok == ';')
+			{
+				advance();
+				return 1;
+			}
+			else if(t == 1)
+			{
+				printf("Expected a ';'.\n");
+				exit(-1);
+			}
+		}
+		else if(t == 1)
+		{
+			printf("Expected correct PRINT sentence.\n");
+			exit(-1);
+		}
 	}
+	else if(tok == SCAN)
+	{
+		advance();
+		if(id_list())
+		{
+			if(tok == ';')
+			{
+				advance();
+				return 1;
+			}
+			else if(t == 1)
+			{
+				printf("Expected a ';'.\n");
+				exit(-1);
+			}
+		}
+		// else if(t == 1)
+		// {
+		// 	printf("Expected correct SCAN sentence.\n");
+		// }
+	}
+	else if(t == 1)
+	{
+		printf("Expected correct Statement.\n");
+		exit(-1);
+	}
+	return 0;
+}
+
+// statement_list
+//     : statement
+//     | statement_list statement
+//     ;
+
+int statement_list(int t)
+{
+	if(statement(t))
+	{
+		while(statement(0)){}
+		return 1;
+	}
+	else if(t == 1)
+	{
+		printf("Expected correct statement(list).\n");
+		exit(-1);
+	}
+	return 0;
+}
+
+// expression_statement
+//     : ';'
+//     | expr ';'
+//     ;
+
+int expression_statement(int t)
+{
+	if(tok == ';')
+	{
+		advance();
+		return 1;
+	}
+	else if(expr(0))
+	{
+		if(tok == ';')
+		{
+			advance();
+			return 1;
+		}
+		else if(t == 1)
+		{
+			printf("Expected a ';'.\n");
+			exit(-1);
+		}
+	}
+	else if(t == 1)
+	{
+		printf("Expected correct Expression_statement.\n");
+		exit(-1);
+	}
+	return 0;
+}
+
+// expr
+//     : cmp_expr
+//     ;
+
+int expr(int t)
+{
+	if(cmp_expr(t))
+	{
+		return 1;
+	}
+	return 0;
+}
+
+// cmp_expr
+//     : add_expr
+//     | cmp_expr CMP add_expr
+//     ;
+
+int cmp_expr(int t)
+{
+	if(add_expr(t))
+	{
+		while(tok == CMP)
+		{
+			advance();
+			if(!add_expr(t))
+			{
+				if(t == 1)
+				{
+					printf("Expected an add_expr.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+		}
+		return 1;//没少advance
+	}
+	return 0;
+}
+
+// add_expr
+//     : mul_expr
+//     | add_expr '+' mul_expr
+//     | add_expr '-' mul_expr
+//     ;
+
+int add_expr(int t)
+{
+	if(mul_expr(t))
+	{
+		while (tok == '+' || tok == '-')
+		{
+			advance();
+			if(!mul_expr(t))
+			{
+				if(t == 1)
+				{
+					printf("Expected mul_expr.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+		}
+		return 1;//没少advance()
+	}
+	return 0;
+}
+
+// mul_expr
+//     : primary_expr
+//     | mul_expr '*' primary_expr
+//     | mul_expr '/' primary_expr
+//     | mul_expr '%' primary_expr
+//     | '-' primary_expr
+//     ;
+
+int mul_expr(int t)
+{
+	if(tok == '-')
+		advance();
+	if(primary_expr(t))
+	{
+		while(tok == '*' || tok == '/' || tok == '%')
+		{
+			advance();
+			if(tok == '-')
+				advance();
+			if(!primary_expr(t))
+			{
+				if(t == 1)
+				{
+					printf("Expected primary_expr.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+		}
+		return 1;
+	}
+	return 0;
+}
+
+// primary_expr
+//     | ID
+//     : ID '(' expr_list ')'
+//     | ID '(' ')'
+//     | ID ASSIGN expr
+//     | ID '=' expr
+//     | ID '[' expr ']'
+//     | ID '[' expr ']' '=' expr
+//     | NUMBER
+//     | STRING
+//     | '(' expr ')'
+//     ;
+
+int primary_expr(int t)
+{
+	if(tok == ID)
+	{
+		advance();
+		if (tok == '(')
+		{
+			advance();
+			if(expr_list(t))
+			{
+				if(tok == ')')
+				{
+					advance();
+					return 1;
+				}
+				else if(t == 1)
+				{
+					printf("Expected a ')'.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+			else if (tok == ')')
+			{
+				advance();
+				return 1;
+			}
+			else if(t == 1)
+			{
+				printf("Expected ')' or expr_list.\n");
+			}
+			else
+				return 0;
+		}
+		else if (tok == ASSIGN)
+		{
+			advance();
+			if(expr(t))
+			{
+				return 1;
+			}
+			else if (t == 1)
+			{
+				printf("Expected expr.\n");
+				exit(-1);
+			}
+			else
+				return 0;
+		}
+		else if (tok == '=')
+		{
+			advance();
+			if(expr(t))
+			{
+				return 1;
+			}
+			else if (t == 1)
+			{
+				printf("Expected expr.\n");
+				exit(-1);
+			}
+			else
+				return 0;
+		}
+		else if (tok == '[')
+		{
+			advance();
+			if(expr(t))
+			{
+				if(tok == ']')
+				{
+					advance();
+					if(tok == '=')
+					{
+						if(expr(t))
+						{
+							return 1;
+						}
+						else if (t == 1)
+						{
+							printf("Expected expr.\n");
+							exit(-1);
+						}
+						else
+							return 0;
+					}
+					else
+						return 1;
+				}
+				else if (t == 1)
+				{
+					printf("Expected a ']'.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+			else if (t == 1)
+			{
+				printf("Expected expr.\n");
+				exit(-1);
+			}
+			else
+				return 0;
+		}
+		else
+			return 1;
+	}	
+	else if (tok == NUMBER)
+	{
+		advance();
+		return 1;
+	}
+	else if (tok == STRING)
+	{
+		advance();
+		return 1;
+	}
+	else if (tok == '(')
+	{
+		advance();
+		if(expr(t))
+		{
+			if(tok == ')')
+			{
+				advance();
+				return 1;
+			}
+			else if (t == 1)
+			{
+				printf("Expected a ')'.\n");
+				exit(-1);
+			}
+			else
+				return 0;
+		}
+		else if (t == 1)
+		{
+			printf("Expected expr.\n");
+			exit(-1);
+		}
+		else
+			return 0;
+	}
+	else
+		return 0;
+}
+
+// expr_list
+//     : expr
+//     | expr_list ',' expr
+//     ;
+
+int expr_list(int t)
+{
+	if(expr(t))
+	{
+		while(tok == ',')
+		{
+			advance();
+			if(!expr(t))
+			{
+				if(t == 1)
+				{
+					printf("Expected an expr.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+		}
+		return 1;
+	}
+	return 0;
+}
+
+// id_list
+//     : ID
+//     | id_list ',' ID
+//     ;
+
+int id_list(int t)
+{
+	if(tok == ID)
+	{
+		advance();
+		while(tok == ',')
+		{
+			advance();
+			if(tok != ID)
+			{
+				if(t == 1)
+				{
+					printf("Expected an ID.\n");
+					exit(-1);
+				}
+				else
+					return 0;
+			}
+			advance();
+		}
+		return 1;
+	}
+	return 0;
 }
 
 //-----------------------------------------------
-//exp: factor
-//	| exp '+' factor
-//	| exp '-' factor
-//	;
-
-int expr()
-{
-	int l = factor();
-	while(tok == '+' || tok == '-')
-	{
-		int oper = tok;
-		advance();
-		int r = factor();
-		if( oper == '+')
-			l += r;
-		else
-			l -= r;
-	}
-	return l;
-}
-
-//factor: term
-//	| factor '*' term
-//	| factor '/' term
-//	;
-
-int factor()
-{
-	int l = term();
-	while(tok == '*' || tok == '/')
-	{
-		int oper = tok;
-		advance();
-		int r = term();
-		if( oper == '*')
-			l *= r;
-		else
-			l /= r;
-	}
-	return l;
-}
-
-
-//term: NUMBER
-//	| '-' term
-//	;
-
-int term()
-{
-	if(tok == NUMBER)
-	{
-		advance();
-		return yylval;
-	}
-	else if(tok == '-')
-	{
-		advance();
-		int k = term();
-		return -k;
-	}
-	else if(tok == 'q')
-		exit(0);
-	return -1;
-}
-
-
-typedef struct _ast ast;
-typedef struct _ast *past;
-struct _ast{
-	int ivalue;
-	char* nodeType;
-	past left;
-	past right;
-};
-
-past newAstNode()
-{
-	past node = malloc(sizeof(ast));
-	if(node == NULL)
-	{
-		printf("run out of memory.\n");
-		exit(0);
-	}
-	memset(node, 0, sizeof(ast));
-	return node;
-}
-
-past newNum(int value)
-{
-	past var = newAstNode();
-	var->nodeType = "intValue";
-	var->ivalue = value;
-	return var;
-}
-past newExpr(int oper, past left,past right)
-{
-	past var = newAstNode();
-	var->nodeType = "expr";
-	var->ivalue = oper;
-	var->left = left;
-	var->right = right;
-	return var;
-}
-
-past astTerm()
-{
-	if(tok == NUMBER)
-	{
-		past n = newNum(yylval);
-		advance();
-		return n;
-	}
-	else if(tok == '-')
-	{
-		advance();
-		past k = astTerm();
-		past n = newExpr('-', NULL, k);
-		return n;
-	}
-	else if(tok == 'q')
-		exit(0);
-	return NULL;
-}
-
-
-past astFactor()
-{
-	past l = astTerm();
-	while(tok == '*' || tok == '/')
-	{
-		int oper = tok;
-		advance();
-		past r = astTerm();
-		l = newExpr(oper, l, r);
-	}
-	return l;
-}
-
-past astExpr()
-{
-	past l = astFactor();
-	while(tok == '+' || tok == '-')
-	{
-		int oper = tok;
-		advance();
-		past r = astFactor();
-		l = newExpr(oper, l, r);
-	}
-	return l;
-}
-
-void showAst(past node, int nest)
-{
-	if(node == NULL)
-		return;
-
-	int i = 0;
-	for(i = 0; i < nest; i ++)
-		printf("  ");
-	if(strcmp(node->nodeType, "intValue") == 0)
-		printf("%s %d\n", node->nodeType, node->ivalue);
-	else if(strcmp(node->nodeType, "expr") == 0)
-		printf("%s '%c'\n", node->nodeType, (char)node->ivalue);
-	showAst(node->left, nest+1);
-	showAst(node->right, nest+1);
-
-}
 
 int main(int argc, char **argv)
 {
-	while(1)
-	{
-		printf("input expression, 'q' to exit>");
-		advance();
-		int r = expr();
-		printf("result: %d\n", r);
+	// while(1)
+	// {
+	printf("Reading file:\n");
+	// advance();
+	setbuf(stdout,NULL);
+	yyin = fopen("test.c", "r");
+	advance();
+	int r = program(1);
+	if(r)
+		printf("Grammar correct!\n");
+	else
+		printf("Grammar incorrect!\n");
 
 		//past rr = astExpr();
 		//showAst(rr, 0);
-	}
+	// }
 	return 0;
 }

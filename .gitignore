@@ -54,3 +54,4 @@ dkms.conf
 # Self
 *.png
 **/.vscode/*
+.DS_Store
