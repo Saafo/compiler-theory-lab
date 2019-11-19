@@ -4,7 +4,7 @@
  Author      : @saafo
  Version     : v0.1 Pre Alpha
  Copyright   : Copyright (c) 2019 SaffordHuang All rights reserved.
- Description : A Parser
+ Description : A Checker
  ============================================================================
  */
 
@@ -1075,5 +1075,6 @@ int main(int argc, char **argv)
 		//past rr = astExpr();
 		//showAst(rr, 0);
 	// }
+    free(yypstr);
 	return 0;
 }
