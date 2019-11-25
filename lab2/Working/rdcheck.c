@@ -833,13 +833,13 @@ int mul_expr(int t)
 }
 
 // primary_expr
-//     | ID
 //     : ID '(' expr_list ')'
 //     | ID '(' ')'
 //     | ID ASSIGN expr
 //     | ID '=' expr
 //     | ID '[' expr ']'
 //     | ID '[' expr ']' '=' expr
+//     | ID
 //     | NUMBER
 //     | STRING
 //     | '(' expr ')'
