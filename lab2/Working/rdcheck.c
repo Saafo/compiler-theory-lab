@@ -25,9 +25,6 @@ extern char* yytext;
 extern FILE* yyin;
 
 
-int factor();
-int expr();
-int term();
 
 int tok;
 
@@ -260,10 +257,10 @@ int initializer(int t)
 //     | ID '=' expr
 //     | ID '(' parameter_list ')'
 //     | ID '(' ')'
-//     | ID '[' expr ']'
+//     | ID '[' ']' '=' '{' intstr_list '}'
 //     | ID '[' ']'
 //     | ID '[' expr ']' '=' '{' intstr_list '}'
-//     | ID '[' ']' '=' '{' intstr_list '}'
+//     | ID '[' expr ']'
 //     ;
 
 int declarator(int t)
@@ -479,8 +476,8 @@ int type(int t)
 //     : type declarator_list ';'
 //     | '{' statement_list '}'
 //     | expr_statement
-//     | IF '(' expr ')' statement
 //     | IF '(' expr ')' statement ELSE statement
+//     | IF '(' expr ')' statement
 //     | WHILE '(' expr ')' statement
 //     | RETURN ';'
 //     | RETURN expr ';'
