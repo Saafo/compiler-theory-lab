@@ -799,7 +799,7 @@ case 5:
 case 6:
 YY_RULE_SETUP
 #line 20 "rdlex.l"
-{ return CMP; } //接下来是keywords
+{ yypstr = (char*)malloc(sizeof(yytext)); strcpy(yypstr,yytext); return CMP; } //接下来是keywords
 	YY_BREAK
 case 7:
 YY_RULE_SETUP

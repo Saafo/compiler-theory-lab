@@ -16,7 +16,7 @@ char* yypstr;
 \+|\-|\*|\/|\%|\=|\;|\{|\}|\[|\]|\(|\)|\, { return yytext[0]; }
 \".*\" { yypstr = (char*)malloc(sizeof(yytext)); strcpy(yypstr,yytext); return STRING;} //String
 [0-9]+ { yylval = atoi(yytext); return NUMBER; } //Number
-\+= | -= | \*= | \/= { return ASSIGN; }
+\+= | -= | \*= | \/= { yypstr = (char*)malloc(sizeof(yytext)); strcpy(yypstr,yytext); return ASSIGN; }
 ==|<=*|>=* { yypstr = (char*)malloc(sizeof(yytext)); strcpy(yypstr,yytext); return CMP; } //接下来是keywords
 scan {return SCAN; }
 print { return PRINT; }
