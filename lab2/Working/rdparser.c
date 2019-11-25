@@ -64,6 +64,34 @@ struct _ast{
     past h;
 };
 
+past newAstNode();
+void freeNode(past);
+past newNumber(int);
+past newOperator(char*);
+past newId(char*);
+past newSymbol(char*);
+past newString(char*);
+past newKeyword(char*);
+past id_list(int);
+past expr_list(int);
+past primary_expr(int);
+past mul_expr(int);
+past add_expr(int);
+past cmp_expr(int);
+past expr(int);
+past expression_statement(int);
+past statement_list(int);
+past statement(int);
+past type(int);
+past parameter(int);
+past parameter_list(int);
+past declarator(int);
+past initializer(int);
+past intstr_list(int);
+past declarator_list(int);
+past decl_or_stmt(int);
+past external_declaration(int);
+past program(int);
 
 past newAstNode()
 {
@@ -79,23 +107,23 @@ past newAstNode()
 
 void freeNode(past p)
 {
-    if(p->a)
-        freeNode(p->a);
-    if(p->b)
-        freeNode(p->b);
-    if(p->c)
-        freeNode(p->c);
-    if(p->d)
-        freeNode(p->d);
-    if(p->e)
-        freeNode(p->e);
-    if(p->f)
-        freeNode(p->f);
-    if(p->g)
-        freeNode(p->g);
-    if(p->h)
-        freeNode(p->h);
-    free(p);
+    // if(p->a != NULL)
+    //     freeNode(p->a);
+    // if(p->b)
+    //     freeNode(p->b);
+    // if(p->c)
+    //     freeNode(p->c);
+    // if(p->d)
+    //     freeNode(p->d);
+    // if(p->e)
+    //     freeNode(p->e);
+    // if(p->f)
+    //     freeNode(p->f);
+    // if(p->g)
+    //     freeNode(p->g);
+    // if(p->h)
+    //     freeNode(p->h);
+    // free(p);
 }
 
 
@@ -107,13 +135,13 @@ past newNumber(int value)
     return var;
 }
 
-past newOperator(int oper, past a, past b)
+past newOperator(char* oper)//, past a, past b)
 {
     past var = newAstNode();
-    var->ivalue = oper;
+    var->svalue = oper;
     var->nodeType = "OPERATOR";
-    var->a = a;
-    var->b = b;
+    // var->a = a;
+    // var->b = b;
     return var;
 }
 
@@ -163,7 +191,361 @@ past newKeyword(char* keyword)
 
 //-------END___OF___NEW----------
 
-//I'm working HERE now
+past id_list(int t)
+{
+	past a = newAstNode();
+	if(tok == ID)
+	{
+		a = newId(yypstr);
+		past p = newAstNode();
+		past pp = newAstNode();
+		past b = newAstNode();
+		past c = newAstNode();
+		advance();
+		while(tok == ',')
+		{
+			b = newSymbol(",");
+			advance();
+			if(tok != ID)
+			{
+				if(t == 1)
+				{
+					printf("Expected an ID.\n");
+					exit(-1);
+				}
+				else
+					return NULL;
+			}
+            pp->a = p->b;
+            pp->b = b;
+            pp->c = c;
+            pp->nodeType = "Non-T";
+            pp->svalue = "id_list";
+            p->b = pp;
+			advance();
+		}
+		p->nodeType = "Non-T";
+		p->svalue = "parameter-list";
+		return p;//没少advance
+	}
+	freeNode(a);
+	return NULL;
+}
+
+past expr_list(int t)
+{
+	past a = newAstNode();
+	if((a = expr(t)))
+	{
+		past p = newAstNode();
+		past pp = newAstNode();
+		past b = newAstNode();
+		past c = newAstNode();
+		p->a = a;
+		while(tok == ',')
+		{
+			b = newSymbol(",");
+			advance();
+			if(!(c = expr(t)))
+			{
+				if(t == 1)
+				{
+					printf("Expected an expr.\n");
+					exit(-1);
+				}
+				else
+					return NULL;
+			}
+            pp->a = p->b;
+            pp->b = b;
+            pp->c = c;
+            pp->nodeType = "Non-T";
+            pp->svalue = "expr_list";
+            p->b = pp;
+		}
+		p->nodeType = "Non-T";
+		p->svalue = "parameter-list";
+		return p;//没少advance
+	}
+	freeNode(a);
+	return NULL;
+}
+
+past primary_expr(int t)
+{
+	past p = newAstNode();
+	past a = newAstNode();
+	past b = newAstNode();
+	past c = newAstNode();
+	past d = newAstNode();
+	past e = newAstNode();
+	past f = newAstNode();
+	if(tok == ID)
+	{
+		a = newId(yypstr);
+		advance();
+		if (tok == '(')
+		{
+			b = newSymbol("(");
+			advance();
+			if((c = expr_list(t)))
+			{
+				if(tok == ')')
+				{
+					d = newSymbol(")");
+					advance();
+					p->a = a;
+					p->b = b;
+					p->c = c;
+					p->d = d;
+					p->nodeType = "Non-T";
+					p->svalue = "expr-list-primary-expr";
+					return p;
+				}
+				else if(t == 1)
+				{
+					printf("Expected a ')'.\n");
+					exit(-1);
+				}
+				else
+					return NULL;
+			}
+			else if (tok == ')')
+			{
+				c = newSymbol(")");
+				advance();
+				p->a = a;
+				p->b = b;
+				p->c = c;
+				p->nodeType = "Non-T";
+				p->svalue = "empty-bracket-primary-expr";
+				return p;
+			}
+			else if(t == 1)
+			{
+				printf("Expected ')' or expr_list.\n");
+			}
+			else
+				return NULL;
+		}
+		else if (tok == ASSIGN)
+		{
+			b = newOperator(yypstr);
+			advance();
+			if((c = expr(t)))
+			{
+				p->a = a;
+				p->b = b;
+				p->c = c;
+				p->nodeType = "Non-T";
+				p->svalue = "dual-assign-primary-expr";
+				return p;
+			}
+			else if (t == 1)
+			{
+				printf("Expected expr.\n");
+				exit(-1);
+			}
+			else
+				return NULL;
+		}
+		else if (tok == '=')
+		{
+			b = newSymbol("=");
+			advance();
+			if((c = expr(t)))
+			{
+				p->a = a;
+				p->b = b;
+				p->c = c;
+				p->nodeType = "Non-T";
+				p->svalue = "assign-primary-expr";
+				return p;
+			}
+			else if (t == 1)
+			{
+				printf("Expected expr.\n");
+				exit(-1);
+			}
+			else
+				return NULL;
+		}
+		else if (tok == '[')
+		{
+			b = newSymbol("[");
+			advance();
+			if((c = expr(t)))
+			{
+				if(tok == ']')
+				{
+					d = newSymbol("]");
+					advance();
+					if(tok == '=')
+					{
+						e = newSymbol("=");
+						if((f = expr(t)))
+						{
+							p->a = a;
+							p->b = b;
+							p->c = c;
+							p->d = d;
+							p->e = e;
+							p->f = f;
+							p->nodeType = "Non-T";
+							p->svalue = "array-assign-primary-expr";
+							return p;
+						}
+						else if (t == 1)
+						{
+							printf("Expected expr.\n");
+							exit(-1);
+						}
+						else
+							return NULL;
+					}
+					else
+					{
+						p->a = a;
+						p->b = b;
+						p->c = c;
+						p->d = d;
+						p->nodeType = "Non-T";
+						p->svalue = "array-primary-expr";
+						return p;
+					}
+				}
+				else if (t == 1)
+				{
+					printf("Expected a ']'.\n");
+					exit(-1);
+				}
+				else
+					return NULL;
+			}
+			else if (t == 1)
+			{
+				printf("Expected expr.\n");
+				exit(-1);
+			}
+			else
+				return NULL;
+		}
+		else
+		{
+			p->a = a;
+			p->nodeType = "Non-T";
+			p->svalue = "id-primary-expr";
+			return p;
+		}
+	}	
+	else if (tok == NUMBER)
+	{
+		a = newNumber(yylval);
+		advance();
+		p->a = a;
+		p->nodeType = "Non-T";
+		p->svalue = "number-primary-expr";
+		return p;
+	}
+	else if (tok == STRING)
+	{
+		a = newString(yypstr);
+		advance();
+		p->a = a;
+		p->nodeType = "Non-T";
+		p->svalue = "string-primary-expr";
+		return p;
+	}
+	else if (tok == '(')
+	{
+		a = newSymbol("(");
+		advance();
+		if((b = expr(t)))
+		{
+			if(tok == ')')
+			{
+				c = newSymbol(")");
+				advance();
+				p->a = a;
+				p->b = b;
+				p->c = c;
+				p->nodeType = "Non-T";
+				p->svalue = "expr-in-bracket-primary-expr";
+				return p;
+			}
+			else if (t == 1)
+			{
+				printf("Expected a ')'.\n");
+				exit(-1);
+			}
+			else
+				return NULL;
+		}
+		else if (t == 1)
+		{
+			printf("Expected expr.\n");
+			exit(-1);
+		}
+		else
+			return NULL;
+	}
+	else
+		return NULL;
+}
+
+past mul_expr(int t)
+{
+	past a = newAstNode();
+	past p = newAstNode();
+	past pp = newAstNode();
+	if(tok == '-')
+	{
+		a = newOperator("-");
+		p->a = a;
+		advance();
+	}
+	past b = newAstNode();
+	if((b = primary_expr(t)))
+	{
+		p->b = b;
+		while(tok == '*' || tok == '/' || tok == '%')
+		{
+			past c = newAstNode();
+			past d = newAstNode();
+			past e = newAstNode();
+			c = (tok == '*')?newOperator("*")
+				:((tok == '/')?newOperator("/"):newOperator("%"));
+			advance();
+			if(tok == '-')
+			{
+				d = newOperator("-");
+				advance();
+			}
+			if(!(e = primary_expr(t)))
+			{
+				if(t == 1)
+				{
+					printf("Expected primary_expr.\n");
+					exit(-1);
+				}
+				else
+					return NULL;
+			}
+            pp->b = p->c;
+            pp->c = c;
+            pp->d = d;
+            pp->nodeType = "Non-T";
+            pp->svalue = "mul_expr";
+            p->c = pp;
+		}
+		p->nodeType = "Non-T";
+		p->svalue = "mul_expr";
+		return p;//没少advance
+	}
+	freeNode(a);
+	return NULL;
+}
+
 past add_expr(int t)
 {
 	past a = newAstNode();
@@ -176,7 +558,7 @@ past add_expr(int t)
 		{
 			past b = newAstNode();
 			past c = newAstNode();
-			b = (tok == '+')?newSymbol("+"):newSymbol("-");
+			b = (tok == '+')?newOperator("+"):newOperator("-");
 			advance();
 			if(!(c = mul_expr(t)))
 			{
@@ -707,11 +1089,11 @@ past parameter_list(int t)
 	{
         past p = newAstNode();
         past pp = newAstNode();
+		past b = newAstNode();
+		past c = newAstNode();
         p->a = a;
 		while(tok == ',')
 		{
-			past b = newAstNode();
-			past c = newAstNode();
 			b = newSymbol(",");
 			advance();
 			if(!(c = parameter(t)))
@@ -1074,6 +1456,8 @@ past declarator_list(int t)
             pp->svalue = "declarator_list";
             p->b = pp;
 		}
+		p->nodeType = "Non-T";
+		p->svalue = "declarator_main_list";
 		return p;//没少advance
 	}
     freeNode(a);
@@ -1177,11 +1561,12 @@ past decl_or_stmt(int t)
 past external_declaration(int t)
 {
     past p = newAstNode();
-    past a = newAstNode();
-    past b = newAstNode();
-    past c = newAstNode();
+    past a;// = newAstNode();
+    past b;// = newAstNode();
+    past c;// = newAstNode();
 	if((a = type(t)))
 	{
+		// free(b);
 		if((b = declarator(t)))
 		{
 			if((c = decl_or_stmt(t)))
@@ -1243,10 +1628,10 @@ void showAst(past node, int nest)
     int i = 0;
     for(i = 0; i < nest; i ++)
         printf("  ");
-    if(strcmp(node->nodeType, "nValue") == 0)
-        printf("%s %d\n", node->nodeType, node->ivalue);
-    else if(strcmp(node->nodeType, "expr") == 0)
-        printf("%s '%c'\n", node->nodeType, (char)node->ivalue);
+    if(strcmp(node->nodeType, "NUMBER") == 0)
+        printf("%d <- %s\n", node->ivalue, node->nodeType);
+    else// if(strcmp(node->nodeType, "expr") == 0)
+        printf("%s <- %s\n", node->svalue, node->nodeType);
     showAst(node->a, nest+1);
     showAst(node->b, nest+1);//unverification!
     showAst(node->c, nest+1);//unverification!
@@ -1258,7 +1643,26 @@ void showAst(past node, int nest)
 
 }
 
-int main()
+int main(int argc, char **argv)
 {
+	// while(1)
+	// {
+	printf("Reading file:\n");
+	// advance();
+	setbuf(stdout,NULL);
+	yyin = fopen("test.c", "r");
+	advance();
+	// int r = program(1);
+	past rr = program(1);
+	showAst(rr, 0);
+	if(rr)
+		printf("Grammar correct!\n");
+	else
+		printf("Grammar incorrect!\n");
 
+		// past rr = astExpr();
+		// showAst(rr, 0);
+	// }
+    free(yypstr);
+	return 0;
 }
