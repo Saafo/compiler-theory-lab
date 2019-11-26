@@ -107,23 +107,27 @@ past newAstNode()
 
 void freeNode(past p)
 {
-    // if(p->a != NULL)
-    //     freeNode(p->a);
-    // if(p->b)
-    //     freeNode(p->b);
-    // if(p->c)
-    //     freeNode(p->c);
-    // if(p->d)
-    //     freeNode(p->d);
-    // if(p->e)
-    //     freeNode(p->e);
-    // if(p->f)
-    //     freeNode(p->f);
-    // if(p->g)
-    //     freeNode(p->g);
-    // if(p->h)
-    //     freeNode(p->h);
-    // free(p);
+	if(p == NULL)
+		return;
+    if(p->a != NULL)
+        freeNode(p->a);
+    if(p->b != NULL)
+        freeNode(p->b);
+    if(p->c != NULL)
+        freeNode(p->c);
+    if(p->d != NULL)
+        freeNode(p->d);
+    if(p->e != NULL)
+        freeNode(p->e);
+    if(p->f != NULL)
+        freeNode(p->f);
+    if(p->g != NULL)
+        freeNode(p->g);
+    if(p->h != NULL)
+        freeNode(p->h);
+	if(p->nodeType != NULL)
+    	free(p);
+	p = NULL;
 }
 
 
@@ -219,12 +223,12 @@ past id_list(int t)
             pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "id_list";
             p->b = pp;
 			advance();
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "parameter-list";
 		return p;//没少advance
 	}
@@ -259,11 +263,11 @@ past expr_list(int t)
             pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "expr_list";
             p->b = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "parameter-list";
 		return p;//没少advance
 	}
@@ -298,7 +302,7 @@ past primary_expr(int t)
 					p->b = b;
 					p->c = c;
 					p->d = d;
-					p->nodeType = "Non-T";
+					p->nodeType = "Non-Terminal";
 					p->svalue = "expr-list-primary-expr";
 					return p;
 				}
@@ -317,7 +321,7 @@ past primary_expr(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "empty-bracket-primary-expr";
 				return p;
 			}
@@ -337,7 +341,7 @@ past primary_expr(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "dual-assign-primary-expr";
 				return p;
 			}
@@ -358,7 +362,7 @@ past primary_expr(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "assign-primary-expr";
 				return p;
 			}
@@ -391,7 +395,7 @@ past primary_expr(int t)
 							p->d = d;
 							p->e = e;
 							p->f = f;
-							p->nodeType = "Non-T";
+							p->nodeType = "Non-Terminal";
 							p->svalue = "array-assign-primary-expr";
 							return p;
 						}
@@ -409,7 +413,7 @@ past primary_expr(int t)
 						p->b = b;
 						p->c = c;
 						p->d = d;
-						p->nodeType = "Non-T";
+						p->nodeType = "Non-Terminal";
 						p->svalue = "array-primary-expr";
 						return p;
 					}
@@ -433,7 +437,7 @@ past primary_expr(int t)
 		else
 		{
 			p->a = a;
-			p->nodeType = "Non-T";
+			p->nodeType = "Non-Terminal";
 			p->svalue = "id-primary-expr";
 			return p;
 		}
@@ -443,7 +447,7 @@ past primary_expr(int t)
 		a = newNumber(yylval);
 		advance();
 		p->a = a;
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "number-primary-expr";
 		return p;
 	}
@@ -452,7 +456,7 @@ past primary_expr(int t)
 		a = newString(yypstr);
 		advance();
 		p->a = a;
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "string-primary-expr";
 		return p;
 	}
@@ -469,7 +473,7 @@ past primary_expr(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "expr-in-bracket-primary-expr";
 				return p;
 			}
@@ -534,11 +538,11 @@ past mul_expr(int t)
             pp->b = p->c;
             pp->c = c;
             pp->d = d;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "mul_expr";
             p->c = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "mul_expr";
 		return p;//没少advance
 	}
@@ -580,11 +584,11 @@ past add_expr(int t)
             pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "add_expr";
             p->b = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "add_expr";
 		return p;//没少advance
 	}
@@ -626,11 +630,11 @@ past cmp_expr(int t)
 			pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "cmp_expr";
             p->b = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "cmp_expr";
 		return p;//没少advance
 	}
@@ -646,7 +650,7 @@ past expr(int t)
 	if((a = cmp_expr(t)))
 	{
 		p->a = a;
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "expr";
 		return p;
 	}
@@ -665,7 +669,7 @@ past expression_statement(int t)
 		a = newSymbol(";");
 		advance();
 		p->a = a;
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "empty-expression-statement";
 		return p;
 	}
@@ -677,7 +681,7 @@ past expression_statement(int t)
 			advance();
 			p->a = a;
 			p->b = b;
-			p->nodeType = "Non-T";
+			p->nodeType = "Non-Terminal";
 			p->svalue = "expression-statement";
 			return p;
 		}
@@ -702,13 +706,20 @@ past statement_list(int t)
 {
     past l = newAstNode();
 	past a = newAstNode();
+	past pointer = newAstNode();
 	if((a = statement(t)))
 	{
 		l->a = a;
+		l->b = pointer;
 		past ll = newAstNode();
 		while((ll = statement(0))){
-			ll->a = l->b;
-			l->b = ll;
+			pointer->nodeType = "Non-Terminal";
+			pointer->svalue = "statements-node";
+			pointer->a = ll;
+			pointer->b = newAstNode();
+			pointer = pointer->b;
+			// ll->a = l->b;
+			// l->b = ll;
 		}
 		l->nodeType = "Non-Terminal";
 		l->svalue = "statement-list";
@@ -745,7 +756,7 @@ past statement(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "declarator(s)-statement";
 				advance();
 				return p;
@@ -777,7 +788,7 @@ past statement(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "statement-list";
 				return p;
 			}
@@ -792,7 +803,7 @@ past statement(int t)
 	else if((a = expression_statement(0)))
 	{
 		p->a = a;
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "expr-statement";
 		return p;
 	}
@@ -825,7 +836,7 @@ past statement(int t)
 								p->e = e;
 								p->f = f;
 								p->g = g;
-								p->nodeType = "Non-T";
+								p->nodeType = "Non-Terminal";
 								p->svalue = "if-else-statement";
 								return p;
 							}
@@ -837,7 +848,7 @@ past statement(int t)
 							p->c = c;
 							p->d = d;
 							p->e = e;
-							p->nodeType = "Non-T";
+							p->nodeType = "Non-Terminal";
 							p->svalue = "if-statement";
 							return p;
 						}
@@ -877,7 +888,7 @@ past statement(int t)
 						p->c = c;
 						p->d = d;
 						p->e = e;
-						p->nodeType = "Non-T";
+						p->nodeType = "Non-Terminal";
 						p->svalue = "while-statement";
 						return p;
 					}
@@ -905,7 +916,7 @@ past statement(int t)
 			advance();
 			p->a = a;
 			p->b = b;
-			p->nodeType = "Non-T";
+			p->nodeType = "Non-Terminal";
 			p->svalue = "empty-return-statement";
 			return p;
 		}
@@ -918,7 +929,7 @@ past statement(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "return-statement";
 				return p;
 			}
@@ -943,7 +954,7 @@ past statement(int t)
 			advance();
 			p->a = a;
 			p->b = b;
-			p->nodeType = "Non-T";
+			p->nodeType = "Non-Terminal";
 			p->svalue = "empty-print-statement";
 			return p;
 		}
@@ -956,7 +967,7 @@ past statement(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "print-statement";
 				return p;
 			}
@@ -985,7 +996,7 @@ past statement(int t)
 				p->a = a;
 				p->b = b;
 				p->c = c;
-				p->nodeType = "Non-T";
+				p->nodeType = "Non-Terminal";
 				p->svalue = "scan-statement";
 				return p;
 			}
@@ -1019,19 +1030,19 @@ past statement(int t)
 past type(int t)
 {
 	past p = newAstNode();
-	past a;// = newAstNode();这里好像可以不要
-	p->nodeType = "Non-T";
+	past a = newAstNode();//这里好像可以不要
+	p->nodeType = "Non-Terminal";
 	p->svalue = "type";
 	if(tok == INT)
 	{
-		a = newNumber(yylval);
+		a = newKeyword("int");
 		advance();
 		p->a = a;
 		return p;
 	}
 	else if(tok == STR)
 	{
-		a = newString(yypstr);
+		a = newKeyword("str");
 		advance();
 		p->a = a;
 		return p;
@@ -1066,7 +1077,7 @@ past parameter(int t)
 			advance();
 			p->a = a;
 			p->b = b;
-			p->nodeType = "Non-T";
+			p->nodeType = "Non-Terminal";
 			p->svalue = "parameter";
 			return p;
 		}
@@ -1116,11 +1127,11 @@ past parameter_list(int t)
             pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "parameter_list";
             p->b = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "parameter-list";
 		return p;//没少advance
 	}
@@ -1152,7 +1163,7 @@ past declarator(int t)
                 p->a = a;
                 p->b = b;
                 p->c = c;
-                p->nodeType = "Non-T";
+                p->nodeType = "Non-Terminal";
                 p->svalue = "assignment-declarator";
 				return p;
             }
@@ -1173,7 +1184,7 @@ past declarator(int t)
                 p->a = a;
                 p->b = b;
                 p->c = c;
-                p->nodeType = "Non-T";
+                p->nodeType = "Non-Terminal";
                 p->svalue = "empty-bracket-declarator";
 				return p;
 			}
@@ -1186,9 +1197,9 @@ past declarator(int t)
 					p->a = a;
 					p->b = b;
 					p->c = c;
-					p->nodeType = "Non-T";
+					p->nodeType = "Non-Terminal";
 					p->svalue = "parameter-list-declarator";
-					return 1;
+					return p;
 				}
 				else if(t == 1)
 				{
@@ -1231,7 +1242,7 @@ past declarator(int t)
 								p->e = e;
 								p->f = f;
 								p->g = g;
-								p->nodeType = "Non-T";
+								p->nodeType = "Non-Terminal";
 								p->svalue = "array-assignment-without-expr-declarator";
 								return p;
 							}
@@ -1258,7 +1269,7 @@ past declarator(int t)
 					p->a = a;
 					p->b = b;
 					p->c = c;
-					p->nodeType = "Non-T";
+					p->nodeType = "Non-Terminal";
 					p->svalue = "array-without-expr-assignment";
 					return p;//没少advance
 				}
@@ -1290,7 +1301,7 @@ past declarator(int t)
 									p->f = f;
 									p->g = g;
 									p->h = h;
-									p->nodeType = "Non-T";
+									p->nodeType = "Non-Terminal";
 									p->svalue = "array-assignment-declarator";
 									return p;
 								}
@@ -1308,7 +1319,7 @@ past declarator(int t)
 						p->b = b;
 						p->c = c;
 						p->d = d;
-						p->nodeType = "Non-T";
+						p->nodeType = "Non-Terminal";
 						p->svalue = "array-declarator";
 						return p;//没少advance
 					}
@@ -1321,7 +1332,7 @@ past declarator(int t)
 		else
 		{
 			p->a = a;
-			p->nodeType = "Non-T";
+			p->nodeType = "Non-Terminal";
 			p->svalue = "ID-declarator";
 			return p;
 		}
@@ -1405,11 +1416,11 @@ past intstr_list(int t)
             pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "intstr_list";
             p->b = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "intstr-list";
 
 		return p;//没少advance
@@ -1452,11 +1463,11 @@ past declarator_list(int t)
             pp->a = p->b;
             pp->b = b;
             pp->c = c;
-            pp->nodeType = "Non-T";
+            pp->nodeType = "Non-Terminal";
             pp->svalue = "declarator_list";
             p->b = pp;
 		}
-		p->nodeType = "Non-T";
+		p->nodeType = "Non-Terminal";
 		p->svalue = "declarator_main_list";
 		return p;//没少advance
 	}
@@ -1495,7 +1506,7 @@ past decl_or_stmt(int t)
                 p->a = a;
                 p->b = b;
                 p->c = c;
-                p->nodeType = "Non-T";
+                p->nodeType = "Non-Terminal";
                 p->svalue = "stmt";
 				return p;
 			}
@@ -1525,7 +1536,7 @@ past decl_or_stmt(int t)
                 p->a = a;
                 p->b = b;
                 p->c = c;
-                p->nodeType = "Non-T";
+                p->nodeType = "Non-Terminal";
                 p->svalue = "decl";
 				return p;
 			}
@@ -1561,9 +1572,9 @@ past decl_or_stmt(int t)
 past external_declaration(int t)
 {
     past p = newAstNode();
-    past a;// = newAstNode();
-    past b;// = newAstNode();
-    past c;// = newAstNode();
+    past a = newAstNode();
+    past b = newAstNode();
+    past c = newAstNode();
 	if((a = type(t)))
 	{
 		// free(b);
@@ -1596,14 +1607,22 @@ past program(int t)//to finish!!!//finished!without solving problem in the comme
 {
     past l = newAstNode();
 	past a = newAstNode();
+	past pointer = newAstNode();
 	if((a = external_declaration(t)))
 	{
 		l->a = a;
+		l->b = pointer;
 		past ll = newAstNode();
 		while((ll = external_declaration(0))){
-			ll->a = l->b;
-			l->b = ll;
+			pointer->nodeType = "Non-Terminal";
+			pointer->svalue = "external_declarations-node";
+			pointer->a = ll;
+			pointer->b = newAstNode();
+			pointer = pointer->b;
+			// ll->a = l->b;
+			// l->b = ll;
 		}//似乎存在潜在?隐患：ext_decl+ext_decl+type+decl时，yylex无法退回
+		freeNode(pointer);
 		l->nodeType = "Non-Terminal";
 		l->svalue = "program";
 		return l;//各list可能也有此隐患，记得处理
@@ -1615,6 +1634,7 @@ past program(int t)//to finish!!!//finished!without solving problem in the comme
 	}
 	freeNode(l);
 	freeNode(a);
+	freeNode(pointer);
 	return NULL;
 }
 
@@ -1622,16 +1642,17 @@ past program(int t)//to finish!!!//finished!without solving problem in the comme
 
 void showAst(past node, int nest)
 {
-    if(node == NULL)
+    // if(node == NULL)
+	if(node == NULL ||(node->nodeType == NULL && node->a == NULL))
         return;
 
     int i = 0;
     for(i = 0; i < nest; i ++)
         printf("  ");
     if(strcmp(node->nodeType, "NUMBER") == 0)
-        printf("%d <- %s\n", node->ivalue, node->nodeType);
+        printf("%s : %d\n", node->nodeType, node->ivalue);
     else// if(strcmp(node->nodeType, "expr") == 0)
-        printf("%s <- %s\n", node->svalue, node->nodeType);
+        printf("%s : %s\n", node->nodeType, node->svalue);
     showAst(node->a, nest+1);
     showAst(node->b, nest+1);//unverification!
     showAst(node->c, nest+1);//unverification!
