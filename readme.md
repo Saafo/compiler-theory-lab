@@ -6,10 +6,12 @@
   * Working/ :  homework working area.
     * decl.c : an explanation for test.c
     * lex.yy.c : generated from rdlex.l
-    * rd_verpara.c : aborted version of rdparser.c (with function parameter)
+    * rd_verpara.c : aborted version of rdparser.c (with function parameter)(abandoned)
     * rdgram.txt : the declararion of grammar.
     * rdlex.l : l file to generate lex.yy.c
     * rdcheck.c : The version without AST.
+    * rdparser.c : The version with AST.
+    * result.txt : Output result of rdparser.c
     * test.c : an example for rdgram.txt
   * Sample/ : Sample Provided by teacher.
     * *.ppt : Requirements.
