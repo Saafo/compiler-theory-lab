@@ -1,0 +1,707 @@
+Reading file:
+tok: int
+tok: a
+tok: =
+tok: 33
+tok: ,
+tok: b
+tok: ,
+tok: c
+tok: =
+tok: 44
+tok: ;
+tok: int
+tok: bb
+tok: =
+tok: 3
+tok: ;
+tok: str
+tok: aaa
+tok: =
+tok: "12345"
+tok: ,
+tok: bbb
+tok: ;
+tok: str
+tok: f
+tok: (
+tok: )
+tok: {
+tok: str
+tok: b
+tok: =
+tok: "aaa" + "ddd"
+tok: ;
+tok: str
+tok: c
+tok: =
+tok: "ccc" + "bb"
+tok: ;
+tok: return
+tok: c
+tok: ;
+tok: }
+tok: int
+tok: func1
+tok: (
+tok: int
+tok: fir
+tok: ,
+tok: int
+tok: sec
+tok: )
+tok: {
+tok: int
+tok: b
+tok: =
+tok: fir
+tok: *
+tok: sec
+tok: +
+tok: 3000
+tok: ;
+tok: int
+tok: a
+tok: =
+tok: 10
+tok: ;
+tok: while
+tok: (
+tok: a
+tok: >
+tok: 0
+tok: )
+tok: {
+tok: str
+tok: k
+tok: =
+tok: "\t" + a + "\n"
+tok: ;
+tok: a
+tok: =
+tok: a
+tok: -
+tok: 1
+tok: ;
+tok: }
+tok: return
+tok: b
+tok: ;
+tok: }
+tok: void
+tok: multable
+tok: (
+tok: )
+tok: {
+tok: int
+tok: i
+tok: =
+tok: 1
+tok: ;
+tok: while
+tok: (
+tok: i
+tok: <
+tok: 10
+tok: )
+tok: {
+tok: int
+tok: j
+tok: =
+tok: 1
+tok: ;
+tok: while
+tok: (
+tok: j
+tok: <
+tok: 10
+tok: )
+tok: {
+tok: print
+tok: "\t"
+tok: +
+tok: i
+tok: *
+tok: j
+tok: ;
+tok: j
+tok: =
+tok: j
+tok: +
+tok: 1
+tok: ;
+tok: }
+tok: print
+tok: "\n"
+tok: ;
+tok: i
+tok: =
+tok: i
+tok: +
+tok: 1
+tok: ;
+tok: }
+tok: }
+tok: int
+tok: fn
+tok: (
+tok: int
+tok: n
+tok: )
+tok: {
+tok: if
+tok: (
+tok: n
+tok: ==
+tok: 1
+tok: )
+tok: return
+tok: 1
+tok: ;
+tok: else
+tok: {
+tok: int
+tok: r
+tok: =
+tok: n
+tok: *
+tok: fn
+tok: (
+tok: n
+tok: -
+tok: 1
+tok: )
+tok: ;
+tok: print
+tok: r
+tok: ;
+tok: return
+tok: r
+tok: ;
+tok: }
+tok: }
+tok: int
+tok: main
+tok: (
+tok: )
+tok: {
+tok: multable
+tok: (
+tok: )
+tok: ;
+tok: return
+tok: 0
+tok: ;
+tok: }
+tok: 
+Non-Terminal : program
+  Non-Terminal : external_declaration
+    Non-Terminal : type
+      KEYWORD : int
+    Non-Terminal : assignment-declarator
+      ID : a
+      ASSIGN : =
+      Non-Terminal : expr
+        Non-Terminal : cmp_expr
+          Non-Terminal : add_expr
+            Non-Terminal : mul_expr
+              Non-Terminal : number-primary-expr
+                NUMBER : 33
+    Non-Terminal : decl
+      Comma : ,
+      Non-Terminal : declarator_main_list
+        Non-Terminal : ID-declarator
+          ID : b
+        Non-Terminal : declarator_list
+          Comma : ,
+          Non-Terminal : assignment-declarator
+            ID : c
+            ASSIGN : =
+            Non-Terminal : expr
+              Non-Terminal : cmp_expr
+                Non-Terminal : add_expr
+                  Non-Terminal : mul_expr
+                    Non-Terminal : number-primary-expr
+                      NUMBER : 44
+      Semi : ;
+  Non-Terminal : external_declarations-node
+    Non-Terminal : external_declaration
+      Non-Terminal : type
+        KEYWORD : int
+      Non-Terminal : assignment-declarator
+        ID : bb
+        ASSIGN : =
+        Non-Terminal : expr
+          Non-Terminal : cmp_expr
+            Non-Terminal : add_expr
+              Non-Terminal : mul_expr
+                Non-Terminal : number-primary-expr
+                  NUMBER : 3
+      Semi : ;
+    Non-Terminal : external_declarations-node
+      Non-Terminal : external_declaration
+        Non-Terminal : type
+          KEYWORD : str
+        Non-Terminal : assignment-declarator
+          ID : aaa
+          ASSIGN : =
+          Non-Terminal : expr
+            Non-Terminal : cmp_expr
+              Non-Terminal : add_expr
+                Non-Terminal : mul_expr
+                  Non-Terminal : string-primary-expr
+                    STRING : "12345"
+        Non-Terminal : decl
+          Comma : ,
+          Non-Terminal : declarator_main_list
+            Non-Terminal : ID-declarator
+              ID : bbb
+          Semi : ;
+      Non-Terminal : external_declarations-node
+        Non-Terminal : external_declaration
+          Non-Terminal : type
+            KEYWORD : str
+          Non-Terminal : empty-bracket-declarator
+            ID : f
+            Bracket : (
+            Bracket : (
+          Non-Terminal : stmt
+            Brace : {
+            Non-Terminal : statement-list
+              Non-Terminal : declarator(s)-statement
+                Non-Terminal : type
+                  KEYWORD : str
+                Non-Terminal : declarator_main_list
+                  Non-Terminal : assignment-declarator
+                    ID : b
+                    ASSIGN : =
+                    Non-Terminal : expr
+                      Non-Terminal : cmp_expr
+                        Non-Terminal : add_expr
+                          Non-Terminal : mul_expr
+                            Non-Terminal : string-primary-expr
+                              STRING : "aaa" + "ddd"
+                Semi : ;
+              Non-Terminal : statements-node
+                Non-Terminal : declarator(s)-statement
+                  Non-Terminal : type
+                    KEYWORD : str
+                  Non-Terminal : declarator_main_list
+                    Non-Terminal : assignment-declarator
+                      ID : c
+                      ASSIGN : =
+                      Non-Terminal : expr
+                        Non-Terminal : cmp_expr
+                          Non-Terminal : add_expr
+                            Non-Terminal : mul_expr
+                              Non-Terminal : string-primary-expr
+                                STRING : "ccc" + "bb"
+                  Semi : ;
+                Non-Terminal : statements-node
+                  Non-Terminal : return-statement
+                    KEYWORD : return
+                    Non-Terminal : expr
+                      Non-Terminal : cmp_expr
+                        Non-Terminal : add_expr
+                          Non-Terminal : mul_expr
+                            Non-Terminal : id-primary-expr
+                              ID : c
+                    Semi : ;
+            Brace : }
+        Non-Terminal : external_declarations-node
+          Non-Terminal : external_declaration
+            Non-Terminal : type
+              KEYWORD : int
+            Non-Terminal : parameter-list-declarator
+              ID : func1
+              Bracket : (
+              Non-Terminal : parameter-list
+                Non-Terminal : parameter
+                  Non-Terminal : type
+                    KEYWORD : int
+                  ID : fir
+                Non-Terminal : parameter_list
+                  Comma : ,
+                  Non-Terminal : parameter
+                    Non-Terminal : type
+                      KEYWORD : int
+                    ID : sec
+            Non-Terminal : stmt
+              Brace : {
+              Non-Terminal : statement-list
+                Non-Terminal : declarator(s)-statement
+                  Non-Terminal : type
+                    KEYWORD : int
+                  Non-Terminal : declarator_main_list
+                    Non-Terminal : assignment-declarator
+                      ID : b
+                      ASSIGN : =
+                      Non-Terminal : expr
+                        Non-Terminal : cmp_expr
+                          Non-Terminal : add_expr
+                            Non-Terminal : mul_expr
+                              Non-Terminal : id-primary-expr
+                                ID : fir
+                              Non-Terminal : mul_expr
+                                OPERATOR : *
+                            Non-Terminal : add_expr
+                              OPERATOR : +
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 3000
+                  Semi : ;
+                Non-Terminal : statements-node
+                  Non-Terminal : declarator(s)-statement
+                    Non-Terminal : type
+                      KEYWORD : int
+                    Non-Terminal : declarator_main_list
+                      Non-Terminal : assignment-declarator
+                        ID : a
+                        ASSIGN : =
+                        Non-Terminal : expr
+                          Non-Terminal : cmp_expr
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 10
+                    Semi : ;
+                  Non-Terminal : statements-node
+                    Non-Terminal : while-statement
+                      KEYWORD : while
+                      Bracket : (
+                      Non-Terminal : expr
+                        Non-Terminal : cmp_expr
+                          Non-Terminal : add_expr
+                            Non-Terminal : mul_expr
+                              Non-Terminal : id-primary-expr
+                                ID : a
+                          Non-Terminal : cmp_expr
+                            KEYWORD : >
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 0
+                      Bracket : )
+                      Non-Terminal : statement-list
+                        Brace : {
+                        Non-Terminal : statement-list
+                          Non-Terminal : declarator(s)-statement
+                            Non-Terminal : type
+                              KEYWORD : str
+                            Non-Terminal : declarator_main_list
+                              Non-Terminal : assignment-declarator
+                                ID : k
+                                ASSIGN : =
+                                Non-Terminal : expr
+                                  Non-Terminal : cmp_expr
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : string-primary-expr
+                                          STRING : "\t" + a + "\n"
+                            Semi : ;
+                          Non-Terminal : statements-node
+                            Non-Terminal : expr-statement
+                              Non-Terminal : expression-statement
+                                Non-Terminal : expr
+                                  Non-Terminal : cmp_expr
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : assign-primary-expr
+                                          ID : a
+                                          ASSIGN : =
+                                          Non-Terminal : expr
+                                            Non-Terminal : cmp_expr
+                                              Non-Terminal : add_expr
+                                                Non-Terminal : mul_expr
+                                                  Non-Terminal : id-primary-expr
+                                                    ID : a
+                                                Non-Terminal : add_expr
+                                                  OPERATOR : -
+                                                  Non-Terminal : mul_expr
+                                                    Non-Terminal : number-primary-expr
+                                                      NUMBER : 1
+                                Semi : ;
+                        Brace : }
+                    Non-Terminal : statements-node
+                      Non-Terminal : return-statement
+                        KEYWORD : return
+                        Non-Terminal : expr
+                          Non-Terminal : cmp_expr
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : id-primary-expr
+                                  ID : b
+                        Semi : ;
+              Brace : }
+          Non-Terminal : external_declarations-node
+            Non-Terminal : external_declaration
+              Non-Terminal : type
+                KEYWORD : VOID
+              Non-Terminal : empty-bracket-declarator
+                ID : multable
+                Bracket : (
+                Bracket : (
+              Non-Terminal : stmt
+                Brace : {
+                Non-Terminal : statement-list
+                  Non-Terminal : declarator(s)-statement
+                    Non-Terminal : type
+                      KEYWORD : int
+                    Non-Terminal : declarator_main_list
+                      Non-Terminal : assignment-declarator
+                        ID : i
+                        ASSIGN : =
+                        Non-Terminal : expr
+                          Non-Terminal : cmp_expr
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 1
+                    Semi : ;
+                  Non-Terminal : statements-node
+                    Non-Terminal : while-statement
+                      KEYWORD : while
+                      Bracket : (
+                      Non-Terminal : expr
+                        Non-Terminal : cmp_expr
+                          Non-Terminal : add_expr
+                            Non-Terminal : mul_expr
+                              Non-Terminal : id-primary-expr
+                                ID : i
+                          Non-Terminal : cmp_expr
+                            KEYWORD : <
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 10
+                      Bracket : )
+                      Non-Terminal : statement-list
+                        Brace : {
+                        Non-Terminal : statement-list
+                          Non-Terminal : declarator(s)-statement
+                            Non-Terminal : type
+                              KEYWORD : int
+                            Non-Terminal : declarator_main_list
+                              Non-Terminal : assignment-declarator
+                                ID : j
+                                ASSIGN : =
+                                Non-Terminal : expr
+                                  Non-Terminal : cmp_expr
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : number-primary-expr
+                                          NUMBER : 1
+                            Semi : ;
+                          Non-Terminal : statements-node
+                            Non-Terminal : while-statement
+                              KEYWORD : while
+                              Bracket : (
+                              Non-Terminal : expr
+                                Non-Terminal : cmp_expr
+                                  Non-Terminal : add_expr
+                                    Non-Terminal : mul_expr
+                                      Non-Terminal : id-primary-expr
+                                        ID : j
+                                  Non-Terminal : cmp_expr
+                                    KEYWORD : <
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : number-primary-expr
+                                          NUMBER : 10
+                              Bracket : )
+                              Non-Terminal : statement-list
+                                Brace : {
+                                Non-Terminal : statement-list
+                                  Non-Terminal : print-statement
+                                    KEYWORD : print
+                                    Non-Terminal : parameter-list
+                                      Non-Terminal : expr
+                                        Non-Terminal : cmp_expr
+                                          Non-Terminal : add_expr
+                                            Non-Terminal : mul_expr
+                                              Non-Terminal : string-primary-expr
+                                                STRING : "\t"
+                                            Non-Terminal : add_expr
+                                              OPERATOR : +
+                                              Non-Terminal : mul_expr
+                                                Non-Terminal : id-primary-expr
+                                                  ID : i
+                                                Non-Terminal : mul_expr
+                                                  OPERATOR : *
+                                    Semi : ;
+                                  Non-Terminal : statements-node
+                                    Non-Terminal : expr-statement
+                                      Non-Terminal : expression-statement
+                                        Non-Terminal : expr
+                                          Non-Terminal : cmp_expr
+                                            Non-Terminal : add_expr
+                                              Non-Terminal : mul_expr
+                                                Non-Terminal : assign-primary-expr
+                                                  ID : j
+                                                  ASSIGN : =
+                                                  Non-Terminal : expr
+                                                    Non-Terminal : cmp_expr
+                                                      Non-Terminal : add_expr
+                                                        Non-Terminal : mul_expr
+                                                          Non-Terminal : id-primary-expr
+                                                            ID : j
+                                                        Non-Terminal : add_expr
+                                                          OPERATOR : +
+                                                          Non-Terminal : mul_expr
+                                                            Non-Terminal : number-primary-expr
+                                                              NUMBER : 1
+                                        Semi : ;
+                                Brace : }
+                            Non-Terminal : statements-node
+                              Non-Terminal : print-statement
+                                KEYWORD : print
+                                Non-Terminal : parameter-list
+                                  Non-Terminal : expr
+                                    Non-Terminal : cmp_expr
+                                      Non-Terminal : add_expr
+                                        Non-Terminal : mul_expr
+                                          Non-Terminal : string-primary-expr
+                                            STRING : "\n"
+                                Semi : ;
+                              Non-Terminal : statements-node
+                                Non-Terminal : expr-statement
+                                  Non-Terminal : expression-statement
+                                    Non-Terminal : expr
+                                      Non-Terminal : cmp_expr
+                                        Non-Terminal : add_expr
+                                          Non-Terminal : mul_expr
+                                            Non-Terminal : assign-primary-expr
+                                              ID : i
+                                              ASSIGN : =
+                                              Non-Terminal : expr
+                                                Non-Terminal : cmp_expr
+                                                  Non-Terminal : add_expr
+                                                    Non-Terminal : mul_expr
+                                                      Non-Terminal : id-primary-expr
+                                                        ID : i
+                                                    Non-Terminal : add_expr
+                                                      OPERATOR : +
+                                                      Non-Terminal : mul_expr
+                                                        Non-Terminal : number-primary-expr
+                                                          NUMBER : 1
+                                    Semi : ;
+                        Brace : }
+                Brace : }
+            Non-Terminal : external_declarations-node
+              Non-Terminal : external_declaration
+                Non-Terminal : type
+                  KEYWORD : int
+                Non-Terminal : parameter-list-declarator
+                  ID : fn
+                  Bracket : (
+                  Non-Terminal : parameter-list
+                    Non-Terminal : parameter
+                      Non-Terminal : type
+                        KEYWORD : int
+                      ID : n
+                Non-Terminal : stmt
+                  Brace : {
+                  Non-Terminal : statement-list
+                    Non-Terminal : if-else-statement
+                      KEYWORD : if
+                      Bracket : (
+                      Non-Terminal : expr
+                        Non-Terminal : cmp_expr
+                          Non-Terminal : add_expr
+                            Non-Terminal : mul_expr
+                              Non-Terminal : id-primary-expr
+                                ID : n
+                          Non-Terminal : cmp_expr
+                            KEYWORD : ==
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 1
+                      Bracket : )
+                      Non-Terminal : return-statement
+                        KEYWORD : return
+                        Non-Terminal : expr
+                          Non-Terminal : cmp_expr
+                            Non-Terminal : add_expr
+                              Non-Terminal : mul_expr
+                                Non-Terminal : number-primary-expr
+                                  NUMBER : 1
+                        Semi : ;
+                      KEYWORD : else
+                      Non-Terminal : statement-list
+                        Brace : {
+                        Non-Terminal : statement-list
+                          Non-Terminal : declarator(s)-statement
+                            Non-Terminal : type
+                              KEYWORD : int
+                            Non-Terminal : declarator_main_list
+                              Non-Terminal : assignment-declarator
+                                ID : r
+                                ASSIGN : =
+                                Non-Terminal : expr
+                                  Non-Terminal : cmp_expr
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : id-primary-expr
+                                          ID : n
+                                        Non-Terminal : mul_expr
+                                          OPERATOR : *
+                            Semi : ;
+                          Non-Terminal : statements-node
+                            Non-Terminal : print-statement
+                              KEYWORD : print
+                              Non-Terminal : parameter-list
+                                Non-Terminal : expr
+                                  Non-Terminal : cmp_expr
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : id-primary-expr
+                                          ID : r
+                              Semi : ;
+                            Non-Terminal : statements-node
+                              Non-Terminal : return-statement
+                                KEYWORD : return
+                                Non-Terminal : expr
+                                  Non-Terminal : cmp_expr
+                                    Non-Terminal : add_expr
+                                      Non-Terminal : mul_expr
+                                        Non-Terminal : id-primary-expr
+                                          ID : r
+                                Semi : ;
+                        Brace : }
+                  Brace : }
+              Non-Terminal : external_declarations-node
+                Non-Terminal : external_declaration
+                  Non-Terminal : type
+                    KEYWORD : int
+                  Non-Terminal : empty-bracket-declarator
+                    ID : main
+                    Bracket : (
+                    Bracket : (
+                  Non-Terminal : stmt
+                    Brace : {
+                    Non-Terminal : statement-list
+                      Non-Terminal : expr-statement
+                        Non-Terminal : expression-statement
+                          Non-Terminal : expr
+                            Non-Terminal : cmp_expr
+                              Non-Terminal : add_expr
+                                Non-Terminal : mul_expr
+                                  Non-Terminal : expr-list-primary-expr
+                                    ID : multable
+                                    Bracket : (
+                                    Non-Terminal : parameter-list
+                                    Bracket : )
+                          Semi : ;
+                      Non-Terminal : statements-node
+                        Non-Terminal : return-statement
+                          KEYWORD : return
+                          Non-Terminal : expr
+                            Non-Terminal : cmp_expr
+                              Non-Terminal : add_expr
+                                Non-Terminal : mul_expr
+                                  Non-Terminal : number-primary-expr
+                                    NUMBER : 0
+                          Semi : ;
+                    Brace : }
+Grammar correct!
