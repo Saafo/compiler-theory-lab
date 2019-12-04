@@ -1,0 +1,1707 @@
+State 129 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: external_declaration
+    2        | program external_declaration
+
+    3 external_declaration: function_definition
+    4                     | declaration
+
+    5 function_definition: type declarator compound_statement
+
+    6 declaration: type init_declarator_list ';'
+
+    7 init_declarator_list: init_declarator
+    8                     | init_declarator_list ',' init_declarator
+
+    9 init_declarator: declarator
+   10                | declarator '=' add_expr
+   11                | declarator '=' '{' intstr_list '}'
+
+   12 intstr_list: initializer
+   13            | intstr_list ',' initializer
+
+   14 initializer: NUMBER
+   15            | STRING
+
+   16 declarator: direct_declarator
+
+   17 direct_declarator: ID
+   18                  | direct_declarator '(' parameter_list ')'
+   19                  | direct_declarator '(' ')'
+   20                  | ID '[' expr ']'
+   21                  | ID '[' ']'
+
+   22 parameter_list: parameter
+   23               | parameter_list ',' parameter
+
+   24 parameter: type ID
+
+   25 type: INT
+   26     | STR
+   27     | VOID
+
+   28 statement: compound_statement
+   29          | expression_statement
+   30          | selection_statement
+   31          | iteration_statement
+   32          | jump_statement
+   33          | print_statement
+   34          | scan_statement
+   35          | declaration
+
+   36 compound_statement: begin_scope end_scope
+   37                   | begin_scope statement_list end_scope
+
+   38 begin_scope: '{'
+
+   39 end_scope: '}'
+
+   40 statement_list: statement
+   41               | statement_list statement
+
+   42 expression_statement: ';'
+   43                     | expr ';'
+
+   44 selection_statement: IF '(' expr ')' statement
+   45                    | IF '(' expr ')' statement ELSE statement
+
+   46 iteration_statement: WHILE '(' expr ')' statement
+
+   47 jump_statement: RETURN ';'
+   48               | RETURN expr ';'
+
+   49 print_statement: PRINT ';'
+   50                | PRINT expr_list ';'
+
+   51 scan_statement: SCAN id_list ';'
+
+   52 expr: assign_expr
+
+   53 assign_expr: cmp_expr
+   54            | ID ASSIGN assign_expr
+   55            | ID '=' assign_expr
+   56            | ID '[' expr ']' '=' assign_expr
+
+   57 cmp_expr: add_expr
+   58         | cmp_expr CMP add_expr
+
+   59 add_expr: mul_expr
+   60         | add_expr '+' mul_expr
+   61         | add_expr '-' mul_expr
+
+   62 mul_expr: primary_expr
+   63         | mul_expr '*' primary_expr
+   64         | mul_expr '/' primary_expr
+   65         | mul_expr '%' primary_expr
+   66         | '-' primary_expr
+
+   67 primary_expr: ID '(' expr_list ')'
+   68             | ID '(' ')'
+   69             | '(' expr ')'
+   70             | ID
+   71             | initializer
+   72             | ID '[' expr ']'
+
+   73 expr_list: expr
+   74          | expr_list ',' expr
+
+   75 id_list: ID
+   76        | id_list ',' ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'%' (37) 65
+'(' (40) 18 19 44 45 46 67 68 69
+')' (41) 18 19 44 45 46 67 68 69
+'*' (42) 63
+'+' (43) 60
+',' (44) 8 13 23 74 76
+'-' (45) 61 66
+'/' (47) 64
+';' (59) 6 42 43 47 48 49 50 51
+'=' (61) 10 11 55 56
+'[' (91) 20 21 56 72
+']' (93) 20 21 56 72
+'{' (123) 11 38
+'}' (125) 11 39
+error (256)
+NUMBER (258) 14
+CMP (259) 58
+ASSIGN (260) 54
+ID (261) 17 20 21 24 54 55 56 67 68 70 72 75 76
+STRING (262) 15
+INT (263) 25
+STR (264) 26
+VOID (265) 27
+IF (266) 44 45
+ELSE (267) 45
+WHILE (268) 46
+RETURN (269) 47 48
+PRINT (270) 49 50
+SCAN (271) 51
+
+
+Nonterminals, with rules where they appear
+
+$accept (31)
+    on left: 0
+program (32)
+    on left: 1 2, on right: 0 2
+external_declaration (33)
+    on left: 3 4, on right: 1 2
+function_definition (34)
+    on left: 5, on right: 3
+declaration (35)
+    on left: 6, on right: 4 35
+init_declarator_list (36)
+    on left: 7 8, on right: 6 8
+init_declarator (37)
+    on left: 9 10 11, on right: 7 8
+intstr_list (38)
+    on left: 12 13, on right: 11 13
+initializer (39)
+    on left: 14 15, on right: 12 13 71
+declarator (40)
+    on left: 16, on right: 5 9 10 11
+direct_declarator (41)
+    on left: 17 18 19 20 21, on right: 16 18 19
+parameter_list (42)
+    on left: 22 23, on right: 18 23
+parameter (43)
+    on left: 24, on right: 22 23
+type (44)
+    on left: 25 26 27, on right: 5 6 24
+statement (45)
+    on left: 28 29 30 31 32 33 34 35, on right: 40 41 44 45 46
+compound_statement (46)
+    on left: 36 37, on right: 5 28
+begin_scope (47)
+    on left: 38, on right: 36 37
+end_scope (48)
+    on left: 39, on right: 36 37
+statement_list (49)
+    on left: 40 41, on right: 37 41
+expression_statement (50)
+    on left: 42 43, on right: 29
+selection_statement (51)
+    on left: 44 45, on right: 30
+iteration_statement (52)
+    on left: 46, on right: 31
+jump_statement (53)
+    on left: 47 48, on right: 32
+print_statement (54)
+    on left: 49 50, on right: 33
+scan_statement (55)
+    on left: 51, on right: 34
+expr (56)
+    on left: 52, on right: 20 43 44 45 46 48 56 69 72 73 74
+assign_expr (57)
+    on left: 53 54 55 56, on right: 52 54 55 56
+cmp_expr (58)
+    on left: 57 58, on right: 53 58
+add_expr (59)
+    on left: 59 60 61, on right: 10 57 58 60 61
+mul_expr (60)
+    on left: 62 63 64 65 66, on right: 59 60 61 63 64 65
+primary_expr (61)
+    on left: 67 68 69 70 71 72, on right: 62 63 64 65 66
+expr_list (62)
+    on left: 73 74, on right: 50 67 74
+id_list (63)
+    on left: 75 76, on right: 51 76
+
+
+state 0
+
+    0 $accept: . program $end
+
+    INT   shift, and go to state 1
+    STR   shift, and go to state 2
+    VOID  shift, and go to state 3
+
+    program               go to state 4
+    external_declaration  go to state 5
+    function_definition   go to state 6
+    declaration           go to state 7
+    type                  go to state 8
+
+
+state 1
+
+   25 type: INT .
+
+    $default  reduce using rule 25 (type)
+
+
+state 2
+
+   26 type: STR .
+
+    $default  reduce using rule 26 (type)
+
+
+state 3
+
+   27 type: VOID .
+
+    $default  reduce using rule 27 (type)
+
+
+state 4
+
+    0 $accept: program . $end
+    2 program: program . external_declaration
+
+    $end  shift, and go to state 9
+    INT   shift, and go to state 1
+    STR   shift, and go to state 2
+    VOID  shift, and go to state 3
+
+    external_declaration  go to state 10
+    function_definition   go to state 6
+    declaration           go to state 7
+    type                  go to state 8
+
+
+state 5
+
+    1 program: external_declaration .
+
+    $default  reduce using rule 1 (program)
+
+
+state 6
+
+    3 external_declaration: function_definition .
+
+    $default  reduce using rule 3 (external_declaration)
+
+
+state 7
+
+    4 external_declaration: declaration .
+
+    $default  reduce using rule 4 (external_declaration)
+
+
+state 8
+
+    5 function_definition: type . declarator compound_statement
+    6 declaration: type . init_declarator_list ';'
+
+    ID  shift, and go to state 11
+
+    init_declarator_list  go to state 12
+    init_declarator       go to state 13
+    declarator            go to state 14
+    direct_declarator     go to state 15
+
+
+state 9
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 10
+
+    2 program: program external_declaration .
+
+    $default  reduce using rule 2 (program)
+
+
+state 11
+
+   17 direct_declarator: ID .
+   20                  | ID . '[' expr ']'
+   21                  | ID . '[' ']'
+
+    '['  shift, and go to state 16
+
+    $default  reduce using rule 17 (direct_declarator)
+
+
+state 12
+
+    6 declaration: type init_declarator_list . ';'
+    8 init_declarator_list: init_declarator_list . ',' init_declarator
+
+    ';'  shift, and go to state 17
+    ','  shift, and go to state 18
+
+
+state 13
+
+    7 init_declarator_list: init_declarator .
+
+    $default  reduce using rule 7 (init_declarator_list)
+
+
+state 14
+
+    5 function_definition: type declarator . compound_statement
+    9 init_declarator: declarator .
+   10                | declarator . '=' add_expr
+   11                | declarator . '=' '{' intstr_list '}'
+
+    '='  shift, and go to state 19
+    '{'  shift, and go to state 20
+
+    $default  reduce using rule 9 (init_declarator)
+
+    compound_statement  go to state 21
+    begin_scope         go to state 22
+
+
+state 15
+
+   16 declarator: direct_declarator .
+   18 direct_declarator: direct_declarator . '(' parameter_list ')'
+   19                  | direct_declarator . '(' ')'
+
+    '('  shift, and go to state 23
+
+    $default  reduce using rule 16 (declarator)
+
+
+state 16
+
+   20 direct_declarator: ID '[' . expr ']'
+   21                  | ID '[' . ']'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    ']'     shift, and go to state 28
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 31
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 17
+
+    6 declaration: type init_declarator_list ';' .
+
+    $default  reduce using rule 6 (declaration)
+
+
+state 18
+
+    8 init_declarator_list: init_declarator_list ',' . init_declarator
+
+    ID  shift, and go to state 11
+
+    init_declarator    go to state 37
+    declarator         go to state 38
+    direct_declarator  go to state 15
+
+
+state 19
+
+   10 init_declarator: declarator '=' . add_expr
+   11                | declarator '=' . '{' intstr_list '}'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '{'     shift, and go to state 40
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    add_expr      go to state 41
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 20
+
+   38 begin_scope: '{' .
+
+    $default  reduce using rule 38 (begin_scope)
+
+
+state 21
+
+    5 function_definition: type declarator compound_statement .
+
+    $default  reduce using rule 5 (function_definition)
+
+
+state 22
+
+   36 compound_statement: begin_scope . end_scope
+   37                   | begin_scope . statement_list end_scope
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    INT     shift, and go to state 1
+    STR     shift, and go to state 2
+    VOID    shift, and go to state 3
+    IF      shift, and go to state 42
+    WHILE   shift, and go to state 43
+    RETURN  shift, and go to state 44
+    PRINT   shift, and go to state 45
+    SCAN    shift, and go to state 46
+    ';'     shift, and go to state 47
+    '{'     shift, and go to state 20
+    '}'     shift, and go to state 48
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    declaration           go to state 49
+    initializer           go to state 30
+    type                  go to state 50
+    statement             go to state 51
+    compound_statement    go to state 52
+    begin_scope           go to state 22
+    end_scope             go to state 53
+    statement_list        go to state 54
+    expression_statement  go to state 55
+    selection_statement   go to state 56
+    iteration_statement   go to state 57
+    jump_statement        go to state 58
+    print_statement       go to state 59
+    scan_statement        go to state 60
+    expr                  go to state 61
+    assign_expr           go to state 32
+    cmp_expr              go to state 33
+    add_expr              go to state 34
+    mul_expr              go to state 35
+    primary_expr          go to state 36
+
+
+state 23
+
+   18 direct_declarator: direct_declarator '(' . parameter_list ')'
+   19                  | direct_declarator '(' . ')'
+
+    INT   shift, and go to state 1
+    STR   shift, and go to state 2
+    VOID  shift, and go to state 3
+    ')'   shift, and go to state 62
+
+    parameter_list  go to state 63
+    parameter       go to state 64
+    type            go to state 65
+
+
+state 24
+
+   14 initializer: NUMBER .
+
+    $default  reduce using rule 14 (initializer)
+
+
+state 25
+
+   54 assign_expr: ID . ASSIGN assign_expr
+   55            | ID . '=' assign_expr
+   56            | ID . '[' expr ']' '=' assign_expr
+   67 primary_expr: ID . '(' expr_list ')'
+   68             | ID . '(' ')'
+   70             | ID .
+   72             | ID . '[' expr ']'
+
+    ASSIGN  shift, and go to state 66
+    '='     shift, and go to state 67
+    '('     shift, and go to state 68
+    '['     shift, and go to state 69
+
+    $default  reduce using rule 70 (primary_expr)
+
+
+state 26
+
+   15 initializer: STRING .
+
+    $default  reduce using rule 15 (initializer)
+
+
+state 27
+
+   69 primary_expr: '(' . expr ')'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 70
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 28
+
+   21 direct_declarator: ID '[' ']' .
+
+    $default  reduce using rule 21 (direct_declarator)
+
+
+state 29
+
+   66 mul_expr: '-' . primary_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+
+    initializer   go to state 30
+    primary_expr  go to state 71
+
+
+state 30
+
+   71 primary_expr: initializer .
+
+    $default  reduce using rule 71 (primary_expr)
+
+
+state 31
+
+   20 direct_declarator: ID '[' expr . ']'
+
+    ']'  shift, and go to state 72
+
+
+state 32
+
+   52 expr: assign_expr .
+
+    $default  reduce using rule 52 (expr)
+
+
+state 33
+
+   53 assign_expr: cmp_expr .
+   58 cmp_expr: cmp_expr . CMP add_expr
+
+    CMP  shift, and go to state 73
+
+    $default  reduce using rule 53 (assign_expr)
+
+
+state 34
+
+   57 cmp_expr: add_expr .
+   60 add_expr: add_expr . '+' mul_expr
+   61         | add_expr . '-' mul_expr
+
+    '+'  shift, and go to state 74
+    '-'  shift, and go to state 75
+
+    $default  reduce using rule 57 (cmp_expr)
+
+
+state 35
+
+   59 add_expr: mul_expr .
+   63 mul_expr: mul_expr . '*' primary_expr
+   64         | mul_expr . '/' primary_expr
+   65         | mul_expr . '%' primary_expr
+
+    '*'  shift, and go to state 76
+    '/'  shift, and go to state 77
+    '%'  shift, and go to state 78
+
+    $default  reduce using rule 59 (add_expr)
+
+
+state 36
+
+   62 mul_expr: primary_expr .
+
+    $default  reduce using rule 62 (mul_expr)
+
+
+state 37
+
+    8 init_declarator_list: init_declarator_list ',' init_declarator .
+
+    $default  reduce using rule 8 (init_declarator_list)
+
+
+state 38
+
+    9 init_declarator: declarator .
+   10                | declarator . '=' add_expr
+   11                | declarator . '=' '{' intstr_list '}'
+
+    '='  shift, and go to state 19
+
+    $default  reduce using rule 9 (init_declarator)
+
+
+state 39
+
+   67 primary_expr: ID . '(' expr_list ')'
+   68             | ID . '(' ')'
+   70             | ID .
+   72             | ID . '[' expr ']'
+
+    '('  shift, and go to state 68
+    '['  shift, and go to state 79
+
+    $default  reduce using rule 70 (primary_expr)
+
+
+state 40
+
+   11 init_declarator: declarator '=' '{' . intstr_list '}'
+
+    NUMBER  shift, and go to state 24
+    STRING  shift, and go to state 26
+
+    intstr_list  go to state 80
+    initializer  go to state 81
+
+
+state 41
+
+   10 init_declarator: declarator '=' add_expr .
+   60 add_expr: add_expr . '+' mul_expr
+   61         | add_expr . '-' mul_expr
+
+    '+'  shift, and go to state 74
+    '-'  shift, and go to state 75
+
+    $default  reduce using rule 10 (init_declarator)
+
+
+state 42
+
+   44 selection_statement: IF . '(' expr ')' statement
+   45                    | IF . '(' expr ')' statement ELSE statement
+
+    '('  shift, and go to state 82
+
+
+state 43
+
+   46 iteration_statement: WHILE . '(' expr ')' statement
+
+    '('  shift, and go to state 83
+
+
+state 44
+
+   47 jump_statement: RETURN . ';'
+   48               | RETURN . expr ';'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    ';'     shift, and go to state 84
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 85
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 45
+
+   49 print_statement: PRINT . ';'
+   50                | PRINT . expr_list ';'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    ';'     shift, and go to state 86
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 87
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+    expr_list     go to state 88
+
+
+state 46
+
+   51 scan_statement: SCAN . id_list ';'
+
+    ID  shift, and go to state 89
+
+    id_list  go to state 90
+
+
+state 47
+
+   42 expression_statement: ';' .
+
+    $default  reduce using rule 42 (expression_statement)
+
+
+state 48
+
+   39 end_scope: '}' .
+
+    $default  reduce using rule 39 (end_scope)
+
+
+state 49
+
+   35 statement: declaration .
+
+    $default  reduce using rule 35 (statement)
+
+
+state 50
+
+    6 declaration: type . init_declarator_list ';'
+
+    ID  shift, and go to state 11
+
+    init_declarator_list  go to state 12
+    init_declarator       go to state 13
+    declarator            go to state 38
+    direct_declarator     go to state 15
+
+
+state 51
+
+   40 statement_list: statement .
+
+    $default  reduce using rule 40 (statement_list)
+
+
+state 52
+
+   28 statement: compound_statement .
+
+    $default  reduce using rule 28 (statement)
+
+
+state 53
+
+   36 compound_statement: begin_scope end_scope .
+
+    $default  reduce using rule 36 (compound_statement)
+
+
+state 54
+
+   37 compound_statement: begin_scope statement_list . end_scope
+   41 statement_list: statement_list . statement
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    INT     shift, and go to state 1
+    STR     shift, and go to state 2
+    VOID    shift, and go to state 3
+    IF      shift, and go to state 42
+    WHILE   shift, and go to state 43
+    RETURN  shift, and go to state 44
+    PRINT   shift, and go to state 45
+    SCAN    shift, and go to state 46
+    ';'     shift, and go to state 47
+    '{'     shift, and go to state 20
+    '}'     shift, and go to state 48
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    declaration           go to state 49
+    initializer           go to state 30
+    type                  go to state 50
+    statement             go to state 91
+    compound_statement    go to state 52
+    begin_scope           go to state 22
+    end_scope             go to state 92
+    expression_statement  go to state 55
+    selection_statement   go to state 56
+    iteration_statement   go to state 57
+    jump_statement        go to state 58
+    print_statement       go to state 59
+    scan_statement        go to state 60
+    expr                  go to state 61
+    assign_expr           go to state 32
+    cmp_expr              go to state 33
+    add_expr              go to state 34
+    mul_expr              go to state 35
+    primary_expr          go to state 36
+
+
+state 55
+
+   29 statement: expression_statement .
+
+    $default  reduce using rule 29 (statement)
+
+
+state 56
+
+   30 statement: selection_statement .
+
+    $default  reduce using rule 30 (statement)
+
+
+state 57
+
+   31 statement: iteration_statement .
+
+    $default  reduce using rule 31 (statement)
+
+
+state 58
+
+   32 statement: jump_statement .
+
+    $default  reduce using rule 32 (statement)
+
+
+state 59
+
+   33 statement: print_statement .
+
+    $default  reduce using rule 33 (statement)
+
+
+state 60
+
+   34 statement: scan_statement .
+
+    $default  reduce using rule 34 (statement)
+
+
+state 61
+
+   43 expression_statement: expr . ';'
+
+    ';'  shift, and go to state 93
+
+
+state 62
+
+   19 direct_declarator: direct_declarator '(' ')' .
+
+    $default  reduce using rule 19 (direct_declarator)
+
+
+state 63
+
+   18 direct_declarator: direct_declarator '(' parameter_list . ')'
+   23 parameter_list: parameter_list . ',' parameter
+
+    ','  shift, and go to state 94
+    ')'  shift, and go to state 95
+
+
+state 64
+
+   22 parameter_list: parameter .
+
+    $default  reduce using rule 22 (parameter_list)
+
+
+state 65
+
+   24 parameter: type . ID
+
+    ID  shift, and go to state 96
+
+
+state 66
+
+   54 assign_expr: ID ASSIGN . assign_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    assign_expr   go to state 97
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 67
+
+   55 assign_expr: ID '=' . assign_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    assign_expr   go to state 98
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 68
+
+   67 primary_expr: ID '(' . expr_list ')'
+   68             | ID '(' . ')'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    ')'     shift, and go to state 99
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 87
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+    expr_list     go to state 100
+
+
+state 69
+
+   56 assign_expr: ID '[' . expr ']' '=' assign_expr
+   72 primary_expr: ID '[' . expr ']'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 101
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 70
+
+   69 primary_expr: '(' expr . ')'
+
+    ')'  shift, and go to state 102
+
+
+state 71
+
+   66 mul_expr: '-' primary_expr .
+
+    $default  reduce using rule 66 (mul_expr)
+
+
+state 72
+
+   20 direct_declarator: ID '[' expr ']' .
+
+    $default  reduce using rule 20 (direct_declarator)
+
+
+state 73
+
+   58 cmp_expr: cmp_expr CMP . add_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    add_expr      go to state 103
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 74
+
+   60 add_expr: add_expr '+' . mul_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    mul_expr      go to state 104
+    primary_expr  go to state 36
+
+
+state 75
+
+   61 add_expr: add_expr '-' . mul_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    mul_expr      go to state 105
+    primary_expr  go to state 36
+
+
+state 76
+
+   63 mul_expr: mul_expr '*' . primary_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+
+    initializer   go to state 30
+    primary_expr  go to state 106
+
+
+state 77
+
+   64 mul_expr: mul_expr '/' . primary_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+
+    initializer   go to state 30
+    primary_expr  go to state 107
+
+
+state 78
+
+   65 mul_expr: mul_expr '%' . primary_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 39
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+
+    initializer   go to state 30
+    primary_expr  go to state 108
+
+
+state 79
+
+   72 primary_expr: ID '[' . expr ']'
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 109
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 80
+
+   11 init_declarator: declarator '=' '{' intstr_list . '}'
+   13 intstr_list: intstr_list . ',' initializer
+
+    ','  shift, and go to state 110
+    '}'  shift, and go to state 111
+
+
+state 81
+
+   12 intstr_list: initializer .
+
+    $default  reduce using rule 12 (intstr_list)
+
+
+state 82
+
+   44 selection_statement: IF '(' . expr ')' statement
+   45                    | IF '(' . expr ')' statement ELSE statement
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 112
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 83
+
+   46 iteration_statement: WHILE '(' . expr ')' statement
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 113
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 84
+
+   47 jump_statement: RETURN ';' .
+
+    $default  reduce using rule 47 (jump_statement)
+
+
+state 85
+
+   48 jump_statement: RETURN expr . ';'
+
+    ';'  shift, and go to state 114
+
+
+state 86
+
+   49 print_statement: PRINT ';' .
+
+    $default  reduce using rule 49 (print_statement)
+
+
+state 87
+
+   73 expr_list: expr .
+
+    $default  reduce using rule 73 (expr_list)
+
+
+state 88
+
+   50 print_statement: PRINT expr_list . ';'
+   74 expr_list: expr_list . ',' expr
+
+    ';'  shift, and go to state 115
+    ','  shift, and go to state 116
+
+
+state 89
+
+   75 id_list: ID .
+
+    $default  reduce using rule 75 (id_list)
+
+
+state 90
+
+   51 scan_statement: SCAN id_list . ';'
+   76 id_list: id_list . ',' ID
+
+    ';'  shift, and go to state 117
+    ','  shift, and go to state 118
+
+
+state 91
+
+   41 statement_list: statement_list statement .
+
+    $default  reduce using rule 41 (statement_list)
+
+
+state 92
+
+   37 compound_statement: begin_scope statement_list end_scope .
+
+    $default  reduce using rule 37 (compound_statement)
+
+
+state 93
+
+   43 expression_statement: expr ';' .
+
+    $default  reduce using rule 43 (expression_statement)
+
+
+state 94
+
+   23 parameter_list: parameter_list ',' . parameter
+
+    INT   shift, and go to state 1
+    STR   shift, and go to state 2
+    VOID  shift, and go to state 3
+
+    parameter  go to state 119
+    type       go to state 65
+
+
+state 95
+
+   18 direct_declarator: direct_declarator '(' parameter_list ')' .
+
+    $default  reduce using rule 18 (direct_declarator)
+
+
+state 96
+
+   24 parameter: type ID .
+
+    $default  reduce using rule 24 (parameter)
+
+
+state 97
+
+   54 assign_expr: ID ASSIGN assign_expr .
+
+    $default  reduce using rule 54 (assign_expr)
+
+
+state 98
+
+   55 assign_expr: ID '=' assign_expr .
+
+    $default  reduce using rule 55 (assign_expr)
+
+
+state 99
+
+   68 primary_expr: ID '(' ')' .
+
+    $default  reduce using rule 68 (primary_expr)
+
+
+state 100
+
+   67 primary_expr: ID '(' expr_list . ')'
+   74 expr_list: expr_list . ',' expr
+
+    ','  shift, and go to state 116
+    ')'  shift, and go to state 120
+
+
+state 101
+
+   56 assign_expr: ID '[' expr . ']' '=' assign_expr
+   72 primary_expr: ID '[' expr . ']'
+
+    ']'  shift, and go to state 121
+
+
+state 102
+
+   69 primary_expr: '(' expr ')' .
+
+    $default  reduce using rule 69 (primary_expr)
+
+
+state 103
+
+   58 cmp_expr: cmp_expr CMP add_expr .
+   60 add_expr: add_expr . '+' mul_expr
+   61         | add_expr . '-' mul_expr
+
+    '+'  shift, and go to state 74
+    '-'  shift, and go to state 75
+
+    $default  reduce using rule 58 (cmp_expr)
+
+
+state 104
+
+   60 add_expr: add_expr '+' mul_expr .
+   63 mul_expr: mul_expr . '*' primary_expr
+   64         | mul_expr . '/' primary_expr
+   65         | mul_expr . '%' primary_expr
+
+    '*'  shift, and go to state 76
+    '/'  shift, and go to state 77
+    '%'  shift, and go to state 78
+
+    $default  reduce using rule 60 (add_expr)
+
+
+state 105
+
+   61 add_expr: add_expr '-' mul_expr .
+   63 mul_expr: mul_expr . '*' primary_expr
+   64         | mul_expr . '/' primary_expr
+   65         | mul_expr . '%' primary_expr
+
+    '*'  shift, and go to state 76
+    '/'  shift, and go to state 77
+    '%'  shift, and go to state 78
+
+    $default  reduce using rule 61 (add_expr)
+
+
+state 106
+
+   63 mul_expr: mul_expr '*' primary_expr .
+
+    $default  reduce using rule 63 (mul_expr)
+
+
+state 107
+
+   64 mul_expr: mul_expr '/' primary_expr .
+
+    $default  reduce using rule 64 (mul_expr)
+
+
+state 108
+
+   65 mul_expr: mul_expr '%' primary_expr .
+
+    $default  reduce using rule 65 (mul_expr)
+
+
+state 109
+
+   72 primary_expr: ID '[' expr . ']'
+
+    ']'  shift, and go to state 122
+
+
+state 110
+
+   13 intstr_list: intstr_list ',' . initializer
+
+    NUMBER  shift, and go to state 24
+    STRING  shift, and go to state 26
+
+    initializer  go to state 123
+
+
+state 111
+
+   11 init_declarator: declarator '=' '{' intstr_list '}' .
+
+    $default  reduce using rule 11 (init_declarator)
+
+
+state 112
+
+   44 selection_statement: IF '(' expr . ')' statement
+   45                    | IF '(' expr . ')' statement ELSE statement
+
+    ')'  shift, and go to state 124
+
+
+state 113
+
+   46 iteration_statement: WHILE '(' expr . ')' statement
+
+    ')'  shift, and go to state 125
+
+
+state 114
+
+   48 jump_statement: RETURN expr ';' .
+
+    $default  reduce using rule 48 (jump_statement)
+
+
+state 115
+
+   50 print_statement: PRINT expr_list ';' .
+
+    $default  reduce using rule 50 (print_statement)
+
+
+state 116
+
+   74 expr_list: expr_list ',' . expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    expr          go to state 126
+    assign_expr   go to state 32
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 117
+
+   51 scan_statement: SCAN id_list ';' .
+
+    $default  reduce using rule 51 (scan_statement)
+
+
+state 118
+
+   76 id_list: id_list ',' . ID
+
+    ID  shift, and go to state 127
+
+
+state 119
+
+   23 parameter_list: parameter_list ',' parameter .
+
+    $default  reduce using rule 23 (parameter_list)
+
+
+state 120
+
+   67 primary_expr: ID '(' expr_list ')' .
+
+    $default  reduce using rule 67 (primary_expr)
+
+
+state 121
+
+   56 assign_expr: ID '[' expr ']' . '=' assign_expr
+   72 primary_expr: ID '[' expr ']' .
+
+    '='  shift, and go to state 128
+
+    $default  reduce using rule 72 (primary_expr)
+
+
+state 122
+
+   72 primary_expr: ID '[' expr ']' .
+
+    $default  reduce using rule 72 (primary_expr)
+
+
+state 123
+
+   13 intstr_list: intstr_list ',' initializer .
+
+    $default  reduce using rule 13 (intstr_list)
+
+
+state 124
+
+   44 selection_statement: IF '(' expr ')' . statement
+   45                    | IF '(' expr ')' . statement ELSE statement
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    INT     shift, and go to state 1
+    STR     shift, and go to state 2
+    VOID    shift, and go to state 3
+    IF      shift, and go to state 42
+    WHILE   shift, and go to state 43
+    RETURN  shift, and go to state 44
+    PRINT   shift, and go to state 45
+    SCAN    shift, and go to state 46
+    ';'     shift, and go to state 47
+    '{'     shift, and go to state 20
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    declaration           go to state 49
+    initializer           go to state 30
+    type                  go to state 50
+    statement             go to state 129
+    compound_statement    go to state 52
+    begin_scope           go to state 22
+    expression_statement  go to state 55
+    selection_statement   go to state 56
+    iteration_statement   go to state 57
+    jump_statement        go to state 58
+    print_statement       go to state 59
+    scan_statement        go to state 60
+    expr                  go to state 61
+    assign_expr           go to state 32
+    cmp_expr              go to state 33
+    add_expr              go to state 34
+    mul_expr              go to state 35
+    primary_expr          go to state 36
+
+
+state 125
+
+   46 iteration_statement: WHILE '(' expr ')' . statement
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    INT     shift, and go to state 1
+    STR     shift, and go to state 2
+    VOID    shift, and go to state 3
+    IF      shift, and go to state 42
+    WHILE   shift, and go to state 43
+    RETURN  shift, and go to state 44
+    PRINT   shift, and go to state 45
+    SCAN    shift, and go to state 46
+    ';'     shift, and go to state 47
+    '{'     shift, and go to state 20
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    declaration           go to state 49
+    initializer           go to state 30
+    type                  go to state 50
+    statement             go to state 130
+    compound_statement    go to state 52
+    begin_scope           go to state 22
+    expression_statement  go to state 55
+    selection_statement   go to state 56
+    iteration_statement   go to state 57
+    jump_statement        go to state 58
+    print_statement       go to state 59
+    scan_statement        go to state 60
+    expr                  go to state 61
+    assign_expr           go to state 32
+    cmp_expr              go to state 33
+    add_expr              go to state 34
+    mul_expr              go to state 35
+    primary_expr          go to state 36
+
+
+state 126
+
+   74 expr_list: expr_list ',' expr .
+
+    $default  reduce using rule 74 (expr_list)
+
+
+state 127
+
+   76 id_list: id_list ',' ID .
+
+    $default  reduce using rule 76 (id_list)
+
+
+state 128
+
+   56 assign_expr: ID '[' expr ']' '=' . assign_expr
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    initializer   go to state 30
+    assign_expr   go to state 131
+    cmp_expr      go to state 33
+    add_expr      go to state 34
+    mul_expr      go to state 35
+    primary_expr  go to state 36
+
+
+state 129
+
+   44 selection_statement: IF '(' expr ')' statement .
+   45                    | IF '(' expr ')' statement . ELSE statement
+
+    ELSE  shift, and go to state 132
+
+    ELSE      [reduce using rule 44 (selection_statement)]
+    $default  reduce using rule 44 (selection_statement)
+
+
+state 130
+
+   46 iteration_statement: WHILE '(' expr ')' statement .
+
+    $default  reduce using rule 46 (iteration_statement)
+
+
+state 131
+
+   56 assign_expr: ID '[' expr ']' '=' assign_expr .
+
+    $default  reduce using rule 56 (assign_expr)
+
+
+state 132
+
+   45 selection_statement: IF '(' expr ')' statement ELSE . statement
+
+    NUMBER  shift, and go to state 24
+    ID      shift, and go to state 25
+    STRING  shift, and go to state 26
+    INT     shift, and go to state 1
+    STR     shift, and go to state 2
+    VOID    shift, and go to state 3
+    IF      shift, and go to state 42
+    WHILE   shift, and go to state 43
+    RETURN  shift, and go to state 44
+    PRINT   shift, and go to state 45
+    SCAN    shift, and go to state 46
+    ';'     shift, and go to state 47
+    '{'     shift, and go to state 20
+    '('     shift, and go to state 27
+    '-'     shift, and go to state 29
+
+    declaration           go to state 49
+    initializer           go to state 30
+    type                  go to state 50
+    statement             go to state 133
+    compound_statement    go to state 52
+    begin_scope           go to state 22
+    expression_statement  go to state 55
+    selection_statement   go to state 56
+    iteration_statement   go to state 57
+    jump_statement        go to state 58
+    print_statement       go to state 59
+    scan_statement        go to state 60
+    expr                  go to state 61
+    assign_expr           go to state 32
+    cmp_expr              go to state 33
+    add_expr              go to state 34
+    mul_expr              go to state 35
+    primary_expr          go to state 36
+
+
+state 133
+
+   45 selection_statement: IF '(' expr ')' statement ELSE statement .
+
+    $default  reduce using rule 45 (selection_statement)
