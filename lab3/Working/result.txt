@@ -1,61 +1,223 @@
-program
-  ext_decl
-    decln
-      type:int
-      init_declr_list
-        declr
-          id:a
-          num:33
-        declr
-          id:b
-        declr
-          id:c
-          num:44
-  ext_decl
-    decln
-      type:int
-      init_declr_list
-        declr
-          id:bb
-          num:3
-  ext_decl
-    decln
-      type:str
-      init_declr_list
-        declr
-          id:aaa
-          str:12345
-        declr
-          id:bbb
-  ext_decl
-    func_def
-      type:str
-      id:f
-        ext_decl
-    func_def
-      type:int
-      id:func1
-      para_list
-      parameter
-        type:int
-        id:fir
-      parameter
-        type:int
-        id:sec
-        ext_decl
-    func_def
-      type:void
-      id:multable
-        ext_decl
-    func_def
-      type:int
-      id:fn
-      para_list
-      parameter
-        type:int
-        id:n
-        ext_decl
-    func_def
-      type:int
-      id:main
-      
+program 
+  ext_decl 
+    decln 
+      type: int
+      init_declr_list 
+        declr 
+          id: a
+          num: 33
+        declr 
+          id: b
+        declr 
+          id: c
+          num: 44
+  ext_decl 
+    decln 
+      type: int
+      init_declr_list 
+        declr 
+          id: bb
+          num: 3
+  ext_decl 
+    decln 
+      type: str
+      init_declr_list 
+        declr 
+          id: aaa
+          str: 12345
+        declr 
+          id: bbb
+  ext_decl 
+    func_def 
+      type: str
+      id: f
+      compound_statement 
+        
+        stmt_list 
+        decln 
+          type: str
+          init_declr_list 
+            declr 
+              id: b
+              expr +
+                str: aaa
+                str: ddd
+        decln 
+          type: str
+          init_declr_list 
+            declr 
+              id: c
+              expr +
+                str: ccc
+                str: bb
+        return_stmt 
+          id: c
+        
+  ext_decl 
+    func_def 
+      type: int
+      id: func1
+      para_list 
+      parameter 
+        type: int
+        id: fir
+      parameter 
+        type: int
+        id: sec
+      compound_statement 
+        
+        stmt_list 
+        decln 
+          type: int
+          init_declr_list 
+            declr 
+              id: b
+              expr +
+                expr *
+                  id: fir
+                  id: sec
+                num: 3000
+        decln 
+          type: int
+          init_declr_list 
+            declr 
+              id: a
+              num: 10
+        while_stmt 
+          cmp_expr >
+            id: a
+            num: 0
+          compound_statement 
+            
+            stmt_list 
+            decln 
+              type: str
+              init_declr_list 
+                declr 
+                  id: k
+                  expr +
+                    expr +
+                      str: \t
+                      id: a
+                    str: \n
+            expr_stmt 
+              assign_expr 
+                id: a
+                expr -
+                  id: a
+                  num: 1
+            
+        return_stmt 
+          id: b
+        
+  ext_decl 
+    func_def 
+      type: void
+      id: multable
+      compound_statement 
+        
+        stmt_list 
+        decln 
+          type: int
+          init_declr_list 
+            declr 
+              id: i
+              num: 1
+        while_stmt 
+          cmp_expr <
+            id: i
+            num: 10
+          compound_statement 
+            
+            stmt_list 
+            decln 
+              type: int
+              init_declr_list 
+                declr 
+                  id: j
+                  num: 1
+            while_stmt 
+              cmp_expr <
+                id: j
+                num: 10
+              compound_statement 
+                
+                stmt_list 
+                print_stmt 
+                  expr_list 
+                  expr +
+                    str: \t
+                    expr *
+                      id: i
+                      id: j
+                expr_stmt 
+                  assign_expr 
+                    id: j
+                    expr +
+                      id: j
+                      num: 1
+                
+            print_stmt 
+              expr_list 
+              str: \n
+            expr_stmt 
+              assign_expr 
+                id: i
+                expr +
+                  id: i
+                  num: 1
+            
+        
+  ext_decl 
+    func_def 
+      type: int
+      id: fn
+      para_list 
+      parameter 
+        type: int
+        id: n
+      compound_statement 
+        
+        stmt_list 
+        if_stmt 
+          cmp_expr ==
+            id: n
+            num: 1
+          return_stmt 
+            num: 1
+          compound_statement 
+            
+            stmt_list 
+            decln 
+              type: int
+              init_declr_list 
+                declr 
+                  id: r
+                  expr *
+                    id: n
+                    primary_expr 
+                      id: fn
+                      expr_list 
+                      expr -
+                        id: n
+                        num: 1
+            print_stmt 
+              expr_list 
+              id: r
+            return_stmt 
+              id: r
+            
+        
+  ext_decl 
+    func_def 
+      type: int
+      id: main
+      compound_statement 
+        
+        stmt_list 
+        expr_stmt 
+          primary_expr 
+            id: multable
+        return_stmt 
+          num: 0
+        

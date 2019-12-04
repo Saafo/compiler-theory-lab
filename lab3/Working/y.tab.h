@@ -76,11 +76,11 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 10 "lrparser.y"
+#line 12 "lrparser.y"
 {
-    int iValue;
-    char *sValue;
-    past pAst;
+	int iValue;
+	char *sValue;
+	past pAst;
 }
 /* Line 1529 of yacc.c.  */
 #line 87 "y.tab.h"

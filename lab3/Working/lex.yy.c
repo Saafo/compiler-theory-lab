@@ -363,9 +363,9 @@ struct yy_trans_info
 static const flex_int16_t yy_accept[72] =
     {   0,
         0,    0,   30,   28,   26,   27,   28,   28,   24,   24,
-       24,   24,   24,   24,   22,   11,   24,   10,   21,   21,
+       24,   24,   24,   24,   22,   10,   24,   11,   21,   21,
        21,   21,   21,   21,   21,   21,   15,    0,   23,    0,
-       20,   18,   16,   17,   25,   19,   22,   14,   12,   13,
+       20,   18,   16,   17,   25,   19,   22,   13,   12,   14,
        21,   21,    1,   21,   21,   21,   21,   21,   21,   21,
        23,   25,   21,    5,   21,   21,   21,    6,   21,   21,
         2,   21,   21,    9,    7,   21,    8,   21,    3,    4,
@@ -488,16 +488,18 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "lrlex.l"
 #line 2 "lrlex.l"
-    #include<stdlib.h>
-    #include "ast.h"
-    #include "y.tab.h"
+#include <stdlib.h>
+#include "ast.h"
+#include "y.tab.h"
 
-enum cmp{LES_CMP = 272,GRE_CMP,EQU_CMP,LESE_CMP,GREE_CMP,NEQU_CMP};
-enum assign{ADD_ASSIGN = 278,SUB_ASSIGN,MUL_ASSIGN,DIV_ASSIGN,REM_ASSIGN};
+enum cmp{ LES_CMP = 272, GRE_CMP, EQU_CMP, LESE_CMP, GREE_CMP, NEQU_CMP};
+
+enum assign{ ADD_ASSIGN = 278, SUB_ASSIGN, MUL_ASSIGN, DIV_ASSIGN, REM_ASSIGN};
 
 int lineno = 1;
-#line 499 "lex.yy.c"
-#line 500 "lex.yy.c"
+	
+#line 501 "lex.yy.c"
+#line 502 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -714,10 +716,10 @@ YY_DECL
 		}
 
 	{
-#line 18 "lrlex.l"
+#line 24 "lrlex.l"
 
 
-#line 720 "lex.yy.c"
+#line 722 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -776,158 +778,158 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 20 "lrlex.l"
+#line 26 "lrlex.l"
 {return IF;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "lrlex.l"
+#line 27 "lrlex.l"
 {return ELSE;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "lrlex.l"
+#line 28 "lrlex.l"
 {return WHILE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 23 "lrlex.l"
+#line 29 "lrlex.l"
 {return RETURN;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 24 "lrlex.l"
+#line 30 "lrlex.l"
 {yylval.sValue = strdup(yytext); return INT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 25 "lrlex.l"
+#line 31 "lrlex.l"
 {yylval.sValue = strdup(yytext); return STR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 26 "lrlex.l"
+#line 32 "lrlex.l"
 {yylval.sValue = strdup(yytext); return VOID;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 27 "lrlex.l"
+#line 33 "lrlex.l"
 {return PRINT;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 28 "lrlex.l"
+#line 34 "lrlex.l"
 {return SCAN;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 30 "lrlex.l"
-{yylval.iValue = GRE_CMP;return CMP;}
+#line 36 "lrlex.l"
+{yylval.iValue = LES_CMP; return CMP;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 31 "lrlex.l"
-{yylval.iValue = LES_CMP;return CMP;}
+#line 37 "lrlex.l"
+{yylval.iValue = GRE_CMP; return CMP;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 32 "lrlex.l"
-{yylval.iValue = EQU_CMP;return CMP;}
+#line 38 "lrlex.l"
+{yylval.iValue = EQU_CMP; return CMP;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 33 "lrlex.l"
-{yylval.iValue = GREE_CMP;return CMP;}
+#line 39 "lrlex.l"
+{yylval.iValue = LESE_CMP; return CMP;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 34 "lrlex.l"
-{yylval.iValue = LESE_CMP;return CMP;}
+#line 40 "lrlex.l"
+{yylval.iValue = GREE_CMP; return CMP;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 35 "lrlex.l"
-{yylval.iValue = NEQU_CMP;return CMP;}
+#line 41 "lrlex.l"
+{yylval.iValue = NEQU_CMP; return CMP;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 36 "lrlex.l"
-{yylval.iValue = ADD_ASSIGN;return ASSIGN;}
+#line 43 "lrlex.l"
+{yylval.iValue = ADD_ASSIGN; return ASSIGN;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 37 "lrlex.l"
-{yylval.iValue = SUB_ASSIGN;return ASSIGN;}
+#line 44 "lrlex.l"
+{yylval.iValue = SUB_ASSIGN; return ASSIGN;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 38 "lrlex.l"
-{yylval.iValue = MUL_ASSIGN;return ASSIGN;}
+#line 45 "lrlex.l"
+{yylval.iValue = MUL_ASSIGN; return ASSIGN;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 39 "lrlex.l"
-{yylval.iValue = DIV_ASSIGN;return ASSIGN;}
+#line 46 "lrlex.l"
+{yylval.iValue = DIV_ASSIGN; return ASSIGN;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 40 "lrlex.l"
-{yylval.iValue = REM_ASSIGN;return ASSIGN;}
+#line 47 "lrlex.l"
+{yylval.iValue = REM_ASSIGN; return ASSIGN;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 42 "lrlex.l"
+#line 49 "lrlex.l"
 {yylval.sValue = strdup(yytext); return ID;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "lrlex.l"
+#line 51 "lrlex.l"
 {yylval.iValue = atoi(yytext); return NUMBER;}
 	YY_BREAK
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
-#line 44 "lrlex.l"
+#line 53 "lrlex.l"
 {
-    char *temp = strdup(yytext + 1);
-    temp[yyleng - 2] = 0;
-    yylval.sValue = strdup(temp);
-    free(temp);
-    return STRING;
-}
+			 char *tem = strdup(yytext + 1); 
+			 tem[yyleng - 2] = 0;
+			 yylval.sValue = strdup(tem);
+			 free(tem);
+			 return STRING;
+			}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 51 "lrlex.l"
+#line 61 "lrlex.l"
 {return yytext[0];}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 52 "lrlex.l"
-{}
+#line 63 "lrlex.l"
+{ /*ignore comment*/ }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 53 "lrlex.l"
-{}
+#line 65 "lrlex.l"
+{ /*ignore space*/ }
 	YY_BREAK
 case 27:
 /* rule 27 can match eol */
 YY_RULE_SETUP
-#line 54 "lrlex.l"
+#line 67 "lrlex.l"
 ++lineno;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 56 "lrlex.l"
+#line 69 "lrlex.l"
 { fprintf(stderr, "Illegal character \'%s\' on line #%d\n", yytext, lineno); exit(1);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 57 "lrlex.l"
+#line 71 "lrlex.l"
 ECHO;
 	YY_BREAK
-#line 930 "lex.yy.c"
+#line 932 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1932,9 +1934,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 57 "lrlex.l"
+#line 71 "lrlex.l"
 
 
 int yywrap(){
-    return 1;
+	return 1;
 }
+
+

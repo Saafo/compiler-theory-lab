@@ -60,3 +60,4 @@ dkms.conf
 *.doc
 *.docx
 Chapter_2/
+**/gitignore/*
