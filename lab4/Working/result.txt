@@ -1,0 +1,61 @@
+
+
+  ==========Statement 1:===========
+   stmt decl 
+      ID a
+
+  %1 = alloca i32, align 4
+
+
+  ==========Statement 2:===========
+   stmt decl 
+      ID b
+      intValue 1
+
+  %2 = alloca i32, align 4
+  store i32 1, i32* %2, align 4
+
+
+  ==========Statement 3:===========
+   stmt decl 
+      ID c
+      expr add +
+         intValue 2
+         intValue 3
+
+  %3 = alloca i32, align 4
+  %4 = add nsw i32 2, 3
+  store i32 %4, i32* %3, align 4
+
+
+  ==========Statement 4:===========
+   stmt decl 
+      ID d
+      expr add +
+         ID b
+         ID c
+
+  %5 = alloca i32, align 4
+  %6 = load i32, i32* %2, align4
+  %7 = load i32, i32* %3, align4
+  %8 = add nsw i32 %6, %7
+  store i32 %8, i32* %5, align 4
+
+
+  ==========Statement 5:===========
+   stmt sele 
+      expr cmp <
+         ID b
+         ID c
+      stmt assign 
+         ID d
+         intValue 4
+
+  %9 = load i32, i32* %2, align4
+  %10 = load i32, i32* %3, align4
+  %11 = icmp slt  i32 %9, %10
+  br i1 %11, label 12, label 13
+  ;<label>:12
+  store i32 4, i32* %5 align 4
+  br label 13
+  ;<label>:13
