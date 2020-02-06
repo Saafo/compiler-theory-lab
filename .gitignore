@@ -59,5 +59,7 @@ dkms.conf
 *.pptx
 *.doc
 *.docx
+*.dps
+*.html
 Chapter_2/
 **/gitignore/*
