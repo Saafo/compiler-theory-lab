@@ -25,3 +25,4 @@
     * rdlex.l : l file to generate lex.yy.c
     * rdparser1.c : for sample.
 * lab3/
+* lab4/
